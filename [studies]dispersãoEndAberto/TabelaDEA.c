@@ -4,38 +4,38 @@
  *
  * Autor: Ulysses de Oliveira
  *
- * Data de Criação: 04/08/2008
- * Última modificação: 08/06/2010
+ * Data de Criaï¿½ï¿½o: 04/08/2008
+ * ï¿½ltima modificaï¿½ï¿½o: 08/06/2010
  *
- * Descrição: Implementação de operações de busca, inserção e
- *            remoção usando dispersão aberto
+ * Descriï¿½ï¿½o: Implementaï¿½ï¿½o de operaï¿½ï¿½es de busca, inserï¿½ï¿½o e
+ *            remoï¿½ï¿½o usando dispersï¿½o aberto
  *
  ****/
 
 /*********************** Includes *************************/
 
-#include <stdlib.h>     /* Miscelânea de funções       */
-#include <stdio.h>      /* Funções de E/S              */
-#include <string.h>     /* Funções strxxx() e memxxx() */
-#include "TabelaDEA.h"  /* Interface deste módulo      */
+#include <stdlib.h>     /* Miscelï¿½nea de funï¿½ï¿½es       */
+#include <stdio.h>      /* Funï¿½ï¿½es de E/S              */
+#include <string.h>     /* Funï¿½ï¿½es strxxx() e memxxx() */
+#include "TabelaDEA.h"  /* Interface deste mï¿½dulo      */
 #include "Registros.h"  /* Processamento de registros  */
 
-/***************** Definições de Funções ******************/
+/***************** Definiï¿½ï¿½es de Funï¿½ï¿½es ******************/
 
 /****
  *
- * RedimensionaTabDEA(): Redimensiona uma tabela de dispersão com
- *                       endereçamento aberto
+ * RedimensionaTabDEA(): Redimensiona uma tabela de dispersï¿½o com
+ *                       endereï¿½amento aberto
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão atual
- *      tamanhoTab (entrada) - tamanho da tabela de dispersão atual
- *      fDispersao (entrada) - ponteiro para a função de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o atual
+ *      tamanhoTab (entrada) - tamanho da tabela de dispersï¿½o atual
+ *      fDispersao (entrada) - ponteiro para a funï¿½ï¿½o de dispersï¿½o
  *                             a ser usada
  *
- * Retorno: Endereço da nova tabela
+ * Retorno: Endereï¿½o da nova tabela
  *
- * Observação: O redimensionamento sempre dobra o tamanho atual da
+ * Observaï¿½ï¿½o: O redimensionamento sempre dobra o tamanho atual da
  *             tabela
  *
  ****/
@@ -50,7 +50,7 @@ static tTabelaDEA RedimensionaTabDEA( tTabelaDEA tabela, int tamanhoTab,
 
       /* Inicia os coletores */
    for (i = 0; i < tamanhoNovo; ++i)
-         /* Todos os coletores da nova tabela estão inicialmente desocupados */
+         /* Todos os coletores da nova tabela estï¿½o inicialmente desocupados */
       tabela[i].status = VAZIO;
 
       /* Transfere as chaves da tabela antiga para a tabela nova */
@@ -60,21 +60,21 @@ static tTabelaDEA RedimensionaTabDEA( tTabelaDEA tabela, int tamanhoTab,
                               tabela[i].chaveEIndice, fDispersao ),
                    "Erro de insercao de redimensionamento");
 
-   free(tabela); /* Libera o espaço ocupado pela tabela antiga */
+   free(tabela); /* Libera o espaï¿½o ocupado pela tabela antiga */
 
    return tabelaNova;
 }
 
 /****
  *
- * CriaTabelaDEA(): Cria e inicializa uma tabela de dispersão
- *                  com endereçamento aberto
+ * CriaTabelaDEA(): Cria e inicializa uma tabela de dispersï¿½o
+ *                  com endereï¿½amento aberto
  *
- * Parâmetros:
- *      nElementos (entrada) - número de posições da tabela
- *                             de dispersão
+ * Parï¿½metros:
+ *      nElementos (entrada) - nï¿½mero de posiï¿½ï¿½es da tabela
+ *                             de dispersï¿½o
  *
- * Retorno: A tabela de dispersão criada
+ * Retorno: A tabela de dispersï¿½o criada
  *
  ****/
 tTabelaDEA CriaTabelaDEA(int nElementos)
@@ -86,7 +86,7 @@ tTabelaDEA CriaTabelaDEA(int nElementos)
    ASSEGURA( tabela, "Impossivel alocar a tabela de dispersao" );
 
    for (i = 0; i < nElementos; ++i)
-         /* Todos os elementos estão inicialmente desocupados */
+         /* Todos os elementos estï¿½o inicialmente desocupados */
       tabela[i].status = VAZIO;
 
    return tabela;
@@ -94,54 +94,51 @@ tTabelaDEA CriaTabelaDEA(int nElementos)
 
 /****
  *
- * BuscaDEA(): Executa uma busca simples numa tabela de dispersão
- *             com endereçamento aberto
+ * BuscaDEA(): Executa uma busca simples numa tabela de dispersï¿½o
+ *             com endereï¿½amento aberto
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
- *      tamanhoTab (entrada) - tamanho da tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
+ *      tamanhoTab (entrada) - tamanho da tabela de dispersï¿½o
  *      chave (entrada) - a chave de busca
- *      fDispersao (entrada) - ponteiro para a função de
- *                             dispersão a ser usada
+ *      fDispersao (entrada) - ponteiro para a funï¿½ï¿½o de
+ *                             dispersï¿½o a ser usada
  *
- * Retorno: Índice do registro no arquivo de registros,
- *          se a chave for encontrada; -1, em caso contrário
+ * Retorno: ï¿½ndice do registro no arquivo de registros,
+ *          se a chave for encontrada; -1, em caso contrï¿½rio
  *
  ****/
-int BuscaDEA( tTabelaDEA tabela, int tamanhoTab,
-              tCEP chave, tFDispersaoDEA fDispersao )
+int BuscaDEA( tTabelaDEA tabela, int tamanhoTab, tCEP chave, tFDispersaoDEA fDispersao )
 {
    int i, pos;
 
-      /* Faz sucessivas sondagens até encontrar a chave, */
-      /* uma posição vazia ou a última sondagem          */
-   for (i = 0; i < tamanhoTab; ++i) {
+   for(i = 0; i<tamanhoTab;i++){
       pos = fDispersao(chave, i, tamanhoTab);
-      ASSEGURA(pos < tamanhoTab, "Dispersao invalida recebido por BuscaDEA()");
 
-      if (tabela[pos].status == VAZIO)
-         return -1; /* A chave não foi encontrada */
+      if(tabela[pos].status == VAZIO || tabela[pos].status == REMOVIDO){
+         return -1;
+      }
 
-      if (tabela[pos].status == OCUPADO &&
-          !memcmp( tabela[pos].chaveEIndice.chave, chave, sizeof(tCEP) ))
-         return tabela[pos].chaveEIndice.indice; /* Chave encontrada */
+      if (tabela[pos].status == OCUPADO && memcmp(tabela[pos].chaveEIndice.chave, chave, sizeof(tCEP))){
+         return tabela[pos].chaveEIndice.indice; //retornamos o indice do arquivo onde esta o endereÃ§o associado com o cep
+      }
    }
 
-   return -1;  /* A chave não foi encontrada */
+   return -1;
 }
 
 /****
  *
- * InsereDEA(): Faz inserção numa tabela de dispersão com
- *              endereçamento aberto
+ * InsereDEA(): Faz inserï¿½ï¿½o numa tabela de dispersï¿½o com
+ *              endereï¿½amento aberto
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
- *      tamanhoTab (entrada) - tamanho da tabela de dispersão
- *      chaveEIndice (entrada) - a chave de busca e seu respectivo índice
- *      fDispersao (entrada) - ponteiro para a função de dispersão a ser usada
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
+ *      tamanhoTab (entrada) - tamanho da tabela de dispersï¿½o
+ *      chaveEIndice (entrada) - a chave de busca e seu respectivo ï¿½ndice
+ *      fDispersao (entrada) - ponteiro para a funï¿½ï¿½o de dispersï¿½o a ser usada
  *
- * Retorno: 1, se houver inserção; 0, em caso contrário
+ * Retorno: 1, se houver inserï¿½ï¿½o; 0, em caso contrï¿½rio
  *
  ****/
 int InsereDEA( tTabelaDEA tabela, int tamanhoTab,
@@ -149,30 +146,25 @@ int InsereDEA( tTabelaDEA tabela, int tamanhoTab,
 {
    int i, pos, posInsercao = -1;
 
-      /* Faz sucessivas sondagens até encontrar a chave */
-      /* ou um local onde se pode fazer a inserção.     */
-   for (i = 0; i < tamanhoTab; ++i) {
+   for(i=0;i<tamanhoTab;i++){
       pos = fDispersao(chaveEIndice.chave, i, tamanhoTab);
-      ASSEGURA( pos < tamanhoTab, "Valor invalido recebido por InsereDEA()" );
 
-      if ( tabela[pos].status == REMOVIDO && posInsercao < 0 )
-            /* Se a chave não for encontrada numa nova   */
-            /* sondagem, esta será a posição de inserção */
+      if(tabela[pos].status == REMOVIDO && posInsercao < 0){
          posInsercao = pos;
-
-      if (tabela[pos].status == VAZIO && posInsercao < 0) {
-         posInsercao = pos; /* A chave não foi encontrada */
-         break; /* A chave será inserida fora do laço */
+         break;
       }
 
-      if ( tabela[pos].status == OCUPADO &&
-           !memcmp( tabela[pos].chaveEIndice.chave,
-                    chaveEIndice.chave, sizeof(tCEP) ) )
-         return 0; /* Chave encontrada */
+      if(tabela[pos].status == VAZIO && posInsercao < 0){
+         posInsercao = pos;
+         break;
+      }
+
+      if(tabela[pos].status == OCUPADO 
+      && !memcmp(tabela[pos].chaveEIndice.chave, chaveEIndice.chave, sizeof(tCEP))){
+         return 0;
+      }
    }
 
-      /* Insere a chave e respectivo índice na  */
-      /* posição determinada dentro do laço for */
    tabela[posInsercao].chaveEIndice = chaveEIndice;
    tabela[posInsercao].status = OCUPADO;
 
@@ -181,52 +173,47 @@ int InsereDEA( tTabelaDEA tabela, int tamanhoTab,
 
 /****
  *
- * RemoveDEA(): Remove uma chave de uma tabela de dispersão com
- *              endereçamento aberto
+ * RemoveDEA(): Remove uma chave de uma tabela de dispersï¿½o com
+ *              endereï¿½amento aberto
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
- *      tamanhoTab (entrada) - tamanho da tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
+ *      tamanhoTab (entrada) - tamanho da tabela de dispersï¿½o
  *      chave (entrada) - a chave de busca
- *      fDispersao (entrada) - ponteiro para a função de dispersão a ser usada
+ *      fDispersao (entrada) - ponteiro para a funï¿½ï¿½o de dispersï¿½o a ser usada
  *
- * Retorno: 1, se a remoção foi ok; 0, caso contrário
+ * Retorno: 1, se a remoï¿½ï¿½o foi ok; 0, caso contrï¿½rio
  *
  ****/
 int RemoveDEA( tTabelaDEA tabela, int tamanhoTab, tCEP chave,
                tFDispersaoDEA fDispersao )
 {
-   int i, pos;
+  int i, pos;
 
-      /* Faz sucessivas sondagens até encontrar a chave, */
-      /* uma posição vazia ou atingir a última sondagem. */
-   for (i = 0; i < tamanhoTab; ++i) {
-      pos = fDispersao(chave, i, tamanhoTab);
-      ASSEGURA(pos < tamanhoTab, "Valor dispersao invalido em RemoveDEA()");
+  for(i=0;i<tamanhoTab;i++){
+   pos = fDispersao(chave, i, tamanhoTab);
 
-      if (tabela[pos].status == VAZIO)
-         return 0; /* A chave não foi encontrada */
-
-      if (tabela[pos].status == OCUPADO &&
-          !memcmp( tabela[pos].chaveEIndice.chave, chave,sizeof(tCEP))) {
-         tabela[pos].status = REMOVIDO; /* Marca como removido */
-
-         return 1; /* Remoção foi OK */
-      }
+   if(tabela[pos].status == VAZIO || tabela[pos].status == REMOVIDO){
+      return 0; // chave nÃ£o encontrada
    }
 
-   return 0;  /* A chave não foi encontrada */
+   if(tabela[pos].status == OCUPADO && !memcmp(tabela[pos].chaveEIndice.chave, chave, sizeof(tCEP))){
+      tabela[pos].status = REMOVIDO;
+      return 1;
+   }
+  }
+  return 0;
 }
 
 /****
  *
- * NChavesDEA(): Calcula o número de chaves na tabela de dispersão
+ * NChavesDEA(): Calcula o nï¿½mero de chaves na tabela de dispersï¿½o
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
- *      tamanhoTab (entrada) - tamanho da tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
+ *      tamanhoTab (entrada) - tamanho da tabela de dispersï¿½o
  *
- * Retorno: O número de chaves na tabela de dispersão
+ * Retorno: O nï¿½mero de chaves na tabela de dispersï¿½o
  *
  ****/
 int NChavesDEA(tTabelaDEA tabela, int tamanhoTab)
@@ -242,14 +229,14 @@ int NChavesDEA(tTabelaDEA tabela, int tamanhoTab)
 
 /****
  *
- * NColetoresVaziosDEA(): Calcula o número de elementos vazios
- *                     na tabela de dispersão
+ * NColetoresVaziosDEA(): Calcula o nï¿½mero de elementos vazios
+ *                     na tabela de dispersï¿½o
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
- *      tamanhoTab (entrada) - tamanho da tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
+ *      tamanhoTab (entrada) - tamanho da tabela de dispersï¿½o
  *
- * Retorno: O número de elementos vazios na tabela de dispersão
+ * Retorno: O nï¿½mero de elementos vazios na tabela de dispersï¿½o
  *
  ****/
 int NColetoresVaziosDEA(tTabelaDEA tabela, int tamanhoTab)
@@ -265,13 +252,13 @@ int NColetoresVaziosDEA(tTabelaDEA tabela, int tamanhoTab)
 
 /****
  *
- * NChavesRemovidasDEA(): Determina o número de chaves que foram removidas
+ * NChavesRemovidasDEA(): Determina o nï¿½mero de chaves que foram removidas
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
- *      tamanhoTab (entrada) - tamanho da tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
+ *      tamanhoTab (entrada) - tamanho da tabela de dispersï¿½o
  *
- * Retorno: O número de conteiners que não são vazios
+ * Retorno: O nï¿½mero de conteiners que nï¿½o sï¿½o vazios
  *
  ****/
 int NChavesRemovidasDEA(tTabelaDEA tabela, int tamanhoTab)
@@ -287,19 +274,19 @@ int NChavesRemovidasDEA(tTabelaDEA tabela, int tamanhoTab)
 
 /****
  *
- * DestroiTabelaDEA(): Libera o espaço ocupado por uma tabela
- *                  de dispersão com endereçamento aberto
+ * DestroiTabelaDEA(): Libera o espaï¿½o ocupado por uma tabela
+ *                  de dispersï¿½o com endereï¿½amento aberto
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
- *      tamTabela (entrada) - tamanho da tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
+ *      tamTabela (entrada) - tamanho da tabela de dispersï¿½o
  *
  * Retorno: Nada
  *
  ****/
 void DestroiTabelaDEA(tTabelaDEA *tabela)
 {
-      /* Libera o espaço ocupado pelo array */
+      /* Libera o espaï¿½o ocupado pelo array */
    free(*tabela);
 
    *tabela = NULL;

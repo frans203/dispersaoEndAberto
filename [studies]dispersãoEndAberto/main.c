@@ -65,12 +65,13 @@ extern void MedidaDeTempo(void);
  *             representa o string � NULL (como deveria)
  *
  ****/
-unsigned DispersaoDJB2(const char *chave)
+unsigned DispersaoDJB2(char *chave)
 {
    unsigned int dispersao = 0;
 
-   while (*chave) {
-      dispersao = 33*dispersao ^ *chave++;
+   while (*chave)
+   {
+      dispersao = dispersao * 33 ^ *chave++;
    }
 
    return dispersao;
@@ -99,14 +100,12 @@ unsigned DispersaoDJB2(const char *chave)
 unsigned FDispersaoLinear( tCEP chave, unsigned i,
                            unsigned tamanhoTab )
 {
-   const char *p = (const char *) chave;
-   int    c;
+  char *p = (char *) chave;//necessario o casting pois assim conseguimos acessar os varios caracteres dentro da nossa string
+  int c;
 
-   ASSEGURA(tamanhoTab, "ERRO: A tabela tem tamanho nulo");
+  c = DispersaoDJB2(p);
 
-   c = DispersaoDJB2(p);
-
-   return (c % tamanhoTab + i) % tamanhoTab;
+  return ((c % tamanhoTab) + i)%tamanhoTab;
 }
 
 /****
@@ -133,13 +132,11 @@ unsigned FDispersaoQuadratica( tCEP chave, unsigned i,
                                unsigned tamanhoTab )
 {
    const char *p = (const char *) chave;
-   int    c;
-
-   ASSEGURA(tamanhoTab, "ERRO: A tabela tem tamanho nulo");
+   int c;
 
    c = DispersaoDJB2(p);
 
-   return (c % tamanhoTab + i*i) % tamanhoTab;
+   return ((c % tamanhoTab) + i*i) % tamanhoTab;
 }
 
 /****
@@ -164,15 +161,12 @@ unsigned FDispersaoQuadratica( tCEP chave, unsigned i,
  ****/
 unsigned FDispersaoDupla(tCEP chave, unsigned i, unsigned tamanhoTab)
 {
-   unsigned    c;
-   const char *p = (const char *) chave;
+   unsigned int c;
+   char *p = (const char*)chave;
 
-   ASSEGURA( tamanhoTab, "ERRO: A tabela tem tamanho nulo" );
+   c = DispersaoDJB2(c);
 
-   c = DispersaoDJB2(p);
-
-   return (c % tamanhoTab +
-           i * (1 + c % (tamanhoTab - 1))) % tamanhoTab;
+   return ((c%tamanhoTab) + i*(1 + c % (tamanhoTab - 1))) % tamanhoTab;
 }
 
 /********************* Fun��es Locais *********************/
@@ -770,8 +764,72 @@ recomeco:
 
 
 unsigned DispersaoReal(double chave, int tam){
-   unsigned precisao = 100000;
+   unsigned precisao = 100000; //obs: unsigned is always an integer
    double pInteira, pReal = modf(chave, &pInteira);
 
    return ((unsigned) pInteira + (unsigned)(pReal * precisao))%tam;
+}
+
+//cahves compostas
+typedef struct 
+{
+  int dia;
+  int mes;
+  int ano;
+} tData;
+
+
+unsigned DispersaoData(const tData *c, int tam){
+   unsigned b = 31;
+
+   return (((c->dia*b + c->mes)%tam)*b + c->ano)%tam;
+}
+
+//multiplicativo
+unsigned DispersaoMulti(unsigned chave, unsigned tamTabela ){
+   double a = (sqrt(5) - 1)/2, pInteira, pFracionaria = modf(chave *a, &pInteira);
+
+   return (unsigned) floor(tamTabela*pFracionaria);
+}
+
+//xor
+unsigned DispersaoXOR(const char *chave) {
+   unsigned int dispersao = *chave;
+   while (*chave){
+      dispersao ^= *chave; //dispersao nova vai ser igual ao XOR da dispersao com a chave
+      chave++;
+   }
+
+   return dispersao;
+}
+
+//rotativo
+   //misturase os bits
+unsigned DispersaoRotativa(const char *chave){
+   //*chave esta apontando para o primeiro character da string
+   unsigned int dispersao = 0;
+   while(*chave){
+      dispersao = (dispersao << 4) ^ (dispersao >> 28) ^ (*chave++); //aqui acessamos o valor chave e incrementamos onde ele esta apontando
+   }
+
+   return dispersao;
+}
+
+unsigned DispersaoMistura(const char *chave){
+   unsigned int dispersao = 0; //Valor Inicial
+
+   //combinacao
+   while(*chave){
+      dispersao += *chave++;
+      dispersao += (dispersao << 10);
+      dispersao ^= (dispersao >> 6);
+   }
+
+   //confusao
+
+   dispersao += (dispersao << 3);
+   dispersao ^= (dispersao >> 11);
+   dispersao += (dispersao << 15);
+
+   return dispersao; 
 }

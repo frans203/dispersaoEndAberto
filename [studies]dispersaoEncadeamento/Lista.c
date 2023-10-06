@@ -1,40 +1,40 @@
 /****
  *
- * Exemplo: Listas Simplesmente Encadeadas sem Ordenação
+ * Exemplo: Listas Simplesmente Encadeadas sem Ordenaï¿½ï¿½o
  *
- * Seção: 10.2
+ * Seï¿½ï¿½o: 10.2
  *
  * Autor: Ulysses de Oliveira
  *
- * Data de Criação: 19/05/2012
- * Última modificação: 25/05/2012
+ * Data de Criaï¿½ï¿½o: 19/05/2012
+ * ï¿½ltima modificaï¿½ï¿½o: 25/05/2012
  *
- * Entrada: V. exemplo de execução
+ * Entrada: V. exemplo de execuï¿½ï¿½o
  *
- * Saída: V. exemplo de execução
+ * Saï¿½da: V. exemplo de execuï¿½ï¿½o
  *
  ****/
 
 /************************ Includes ************************/
 
-#include <stdio.h>    /* Entrada e saída         */
+#include <stdio.h>    /* Entrada e saï¿½da         */
 #include <stdlib.h>   /* exit()                  */
-#include <string.h>   /* Funções strXXX()        */
+#include <string.h>   /* Funï¿½ï¿½es strXXX()        */
 #include "Macros.h"   /* Macro ASSEGURA          */
 #include "Lista.h"    /* Interface deste arquivo */
 
-/****************** Definições de Funções *****************/
+/****************** Definiï¿½ï¿½es de Funï¿½ï¿½es *****************/
 
 /****
  *
  * IniciaListaSE(): Inicia uma lista simplesmente encadeada
  *
- * Parâmetros: *lista (saída) - a lista que será iniciada
+ * Parï¿½metros: *lista (saï¿½da) - a lista que serï¿½ iniciada
  *
  * Retorno: Nada
  *
- * Observação: Esta função independe do tipo de conteúdo
- *             efetivo armazenado em cada nó da lista
+ * Observaï¿½ï¿½o: Esta funï¿½ï¿½o independe do tipo de conteï¿½do
+ *             efetivo armazenado em cada nï¿½ da lista
  *
  ****/
 void IniciaListaSE(tListaSE *lista)
@@ -44,28 +44,28 @@ void IniciaListaSE(tListaSE *lista)
 
 /****
  *
- * ComprimentoListaSE(): Calcula o número de nós de uma lista
+ * ComprimentoListaSE(): Calcula o nï¿½mero de nï¿½s de uma lista
  *                       simplesmente encadeada
  *
- * Parâmetros:
- *     lista (entrada) - ponteiro para o primeiro nó da lista
- *                       cujo comprimento será calculado
+ * Parï¿½metros:
+ *     lista (entrada) - ponteiro para o primeiro nï¿½ da lista
+ *                       cujo comprimento serï¿½ calculado
  *
- * Retorno: O número de nós da referida lista
+ * Retorno: O nï¿½mero de nï¿½s da referida lista
  *
- * Observação: Esta função independe do tipo de conteúdo
- *             efetivo armazenado em cada nó da lista
+ * Observaï¿½ï¿½o: Esta funï¿½ï¿½o independe do tipo de conteï¿½do
+ *             efetivo armazenado em cada nï¿½ da lista
  *
  ****/
 int ComprimentoListaSE(tListaSE lista)
 {
-   int tamanho = 0; /* Armazena o número de nós da lista */
+   int tamanho = 0; /* Armazena o nï¿½mero de nï¿½s da lista */
 
-      /* Acessa cada nó da lista e conta */
-      /* quantos nós são acessados       */
+      /* Acessa cada nï¿½ da lista e conta */
+      /* quantos nï¿½s sï¿½o acessados       */
    while (lista) {
-      ++tamanho; /* Mais um nó foi encontrado */
-      lista = lista->proximo; /* Passa para o próximo nó */
+      ++tamanho; /* Mais um nï¿½ foi encontrado */
+      lista = lista->proximo; /* Passa para o prï¿½ximo nï¿½ */
    }
 
    return tamanho;
@@ -73,111 +73,80 @@ int ComprimentoListaSE(tListaSE lista)
 
 /****
  *
- * InsereListaSE(): Insere um novo nó no início de uma
+ * InsereListaSE(): Insere um novo nï¿½ no inï¿½cio de uma
  *                lista simplesmente encadeada
  *
- * Parâmetros:
- *    *lista (entrada/saída) - ponteiro para a lista na qual
- *                             será feita a inserção
- *     conteudo (entrada) - conteúdo do nó que será inserido
+ * Parï¿½metros:
+ *    *lista (entrada/saï¿½da) - ponteiro para a lista na qual
+ *                             serï¿½ feita a inserï¿½ï¿½o
+ *     conteudo (entrada) - conteï¿½do do nï¿½ que serï¿½ inserido
  *
  * Retorno: Nada
  *
- * Observação: Como a lista não obedece nenhuma ordem, pode-se
- *             inserir um nó em qualquer posição da lista.
- *             Escolheu-se inserção no início da lista porque
- *             é mais simples e eficiente.
+ * Observaï¿½ï¿½o: Como a lista nï¿½o obedece nenhuma ordem, pode-se
+ *             inserir um nï¿½ em qualquer posiï¿½ï¿½o da lista.
+ *             Escolheu-se inserï¿½ï¿½o no inï¿½cio da lista porque
+ *             ï¿½ mais simples e eficiente.
  *
  ****/
-void InsereListaSE(tListaSE *lista, const tCEP_Ind *conteudo)
-{
-   tNoListaSE *ptrNovoNo; /* Apontará para o novo nó alocado */
+void InsereListaSE(tListaSE *lista, const tCEP_Ind *conteudo){
+   tNoListaSE *ptrNovoNo;
 
-      /* Tenta alocar um novo nó */
-   ASSEGURA( ptrNovoNo = malloc(sizeof(tNoListaSE)),
-             "Nao foi possivel alocar no'" );
+   ptrNovoNo = malloc(sizeof(tNoListaSE));
 
-      /* Armazena no novo nó os dados recebidos como parâmetro */
-   ptrNovoNo->conteudo = *conteudo;
-
-      /* O novo nó apontará para o início corrente da lista */
+   ptrNovoNo->conteudo = *conteudo; //* pois precisamos acessar o valor
    ptrNovoNo->proximo = *lista;
 
-      /* O início da lista passa a apontar para o novo nó */
    *lista = ptrNovoNo;
 }
 
 /****
  *
  * RemoveListaSE(): Remove de uma lista simplesmente encadeada
- *                um nó que contém um determinado valor
- *                especificado como parâmetro
+ *                um nï¿½ que contï¿½m um determinado valor
+ *                especificado como parï¿½metro
  *
- * Parâmetros:
- *     lista (entrada/saída) - endereço do ponteiro que representa
- *                             a lista na qual será feita a remoção
- *     conteudo (entrada) - conteúdo do nó a ser removido
+ * Parï¿½metros:
+ *     lista (entrada/saï¿½da) - endereï¿½o do ponteiro que representa
+ *                             a lista na qual serï¿½ feita a remoï¿½ï¿½o
+ *     conteudo (entrada) - conteï¿½do do nï¿½ a ser removido
  *
- * Retorno: 0, se a remoção for bem sucedida, ou 1, se o nó a
- *          ser removido não for encontrado.
+ * Retorno: 0, se a remoï¿½ï¿½o for bem sucedida, ou 1, se o nï¿½ a
+ *          ser removido nï¿½o for encontrado.
  *
  ****/
 int RemoveListaSE(tListaSE *lista, tCEP chave)
 {
-   tListaSE p = *lista, /* p aponta para o nó corrente     */
-            q = NULL;   /* q aponta para o nó anterior a p */
+  tListaSE p = *lista, q = NULL;
 
-      /*                                                     */
-      /* O laço while procura um nó que cujo conteúdo case   */
-      /* com o parâmetro 'conteudo' e tem duas condições de  */
-      /* parada: (1) todos os nós são acessados sem que o    */
-      /* referido nó tenha sido encontrado (neste  caso, p   */
-      /* assume NULL); (2) o nó que contém o valor procurado */
-      /* é encontrado.                                       */
-      /*                                                     */
-   while (p && strcmp(p->conteudo.chave, chave)) {
-      q = p; /* q passa a apontar para o nó corrente */
-      p = p->proximo; /* p passa a apontar para o próximo nó */
-   }
+  while(p && strcmp(p->conteudo.chave, chave)){
+   q = p;
+   p = p->proximo;
+  }
 
-      /* Se p for NULL, a lista foi totalmente examinada   */
-      /* sem que o nó a ser removido tenha sido encontrado */
-   if (!p) {
-      return 1; /* Tentativa de remoção de nó inexistente */
-   }
+  if(!p){
+   return -1;
+  }
 
-      /****************************************************/
-      /* Neste ponto, p aponta para o nó a ser removido e */
-      /* q aponta para o nó imediatamente anterior a ele  */
-      /****************************************************/
+  if(p == *lista){
+   (*lista) = p->proximo;
+  }else{
+   q->proximo = p->proximo;
+   free(p);
+  }
 
-      /* Verifica se p aponta para o primeiro */
-      /* nó da lista porque remoção no início */
-      /* deve ser tratada separadamente       */
-   if (p == *lista) { /* Remoção será no início da lista */
-      (*lista) = p->proximo; /* Altera início da lista */
-   } else {/* Nó a ser removido NÃO é o primeiro da lista */
-      q->proximo = p->proximo; /* Desvia o nó anterior */
-                               /* do nó a ser removido */
-   }
-
-      /* Neste ponto, o nó desejado não faz mais parte da */
-      /* lista, mas ele ainda ocupa espaço em memória.    */
-      /* Portanto, é necessário liberar este espaço.      */
-   free(p); /* Libera o nó removido */
-
-   return 0;
+  return 0;
 }
 
 /****
  *
  * EstaVaziaListaSE(): Verifica se uma lista simplesmente
- *                 encadeada está vazia
+ *                 encadeada estï¿½ vazia
  *
- * Parâmetros:
- *     lista (entrada) - a lista que será verificada
+ * Parï¿½metros:
+ *     lista (entrada) - a lista que serï¿½ verificada
  *
- * Retorno: 1, quando a lista está vazia, ou 0, em caso contrário
+ * Retorno: 1, quando a lista estï¿½ vazia, ou 0, em caso contrï¿½rio
  *
  ****/
 int EstaVaziaListaSE(tListaSE lista)
@@ -187,92 +156,86 @@ int EstaVaziaListaSE(tListaSE lista)
 
 /****
  *
- * BuscaListaSE(): Retorna o endereço do conteúdo
- *                            efetivo do nó que possui uma
+ * BuscaListaSE(): Retorna o endereï¿½o do conteï¿½do
+ *                            efetivo do nï¿½ que possui uma
  *                            determinado chave numa lista
  *                            simplesmente encadeada
  *
- * Parâmetros:
- *      *lista (entrada) - lista que será pesquisada
+ * Parï¿½metros:
+ *      *lista (entrada) - lista que serï¿½ pesquisada
  *       chave (entrada) - chave de busca
  *
- * Retorno: Endereço dos dados que contêm o referido conteúdo,
- *          se ele for encontrado. Caso contrário, NULL.
+ * Retorno: Endereï¿½o dos dados que contï¿½m o referido conteï¿½do,
+ *          se ele for encontrado. Caso contrï¿½rio, NULL.
  *
  ****/
 int BuscaListaSE(tListaSE *lista, tCEP chave)
 {
-   tListaSE p = *lista; /* p apontará para o nó corrente     */
+   tListaSE p = *lista; //primeiro item da lista
 
-      /* Enquanto p não assume NULL ou a chave de um nó não */
-      /* casa com o parâmetro 'chave', a busca prossegue    */
-   while (p && strcmp(p->conteudo.chave, chave)) {
+   while(p && strcmp(p->conteudo.chave, chave)){
       p = p->proximo;
    }
 
-      /* Se 'p' assume NULL é porque a chave especificada */
-      /* como parâmetro não foi encontrado                */
-   if(!p) {
-      return -1; /* Chave não foi encontrada */
+   if(!p){
+      return -1;
    }
 
-      /* Neste ponto, p aponta para o nó encontrado. Então, */
-      /* retorna-se o endereço de seu campo 'conteudo'.     */
    return p->conteudo.indice;
 }
 
 /****
  *
- * DestroiListaSE(): Libera o espaço ocupado pelos nós de
+ * DestroiListaSE(): Libera o espaï¿½o ocupado pelos nï¿½s de
  *                   uma lista encadeada, tornando-a vazia
  *
- * Parâmetros:
- *     lista (entrada/saída) - endereço do ponteiro para a
+ * Parï¿½metros:
+ *     lista (entrada/saï¿½da) - endereï¿½o do ponteiro para a
  *                             lista simplesmente encadeada
- *                             que será destruída
+ *                             que serï¿½ destruï¿½da
  *
  * Retorno: Nada
  *
  ****/
 void DestroiListaSE(tListaSE *lista)
 {
-   tListaSE p; /* Aponta para o próximo nó a ser liberado */
+   tListaSE p; /* Aponta para o prï¿½ximo nï¿½ a ser liberado */
 
-   if (!*lista) { /* Verifica se a lista está vazia */
-      return; /* Lista vazia não precisa ser destruída */
+   if (!*lista) { /* Verifica se a lista estï¿½ vazia */
+      return; /* Lista vazia nï¿½o precisa ser destruï¿½da */
    }
 
-   p = *lista; /* Faz p apontar para o início da lista */
+   p = *lista; /* Faz p apontar para o inï¿½cio da lista */
 
-      /* Visita cada nó da lista liberando-o */
+      /* Visita cada nï¿½ da lista liberando-o */
    do {
-         /* Passa para o próximo nó antes que o nó corrente */
-         /* seja destruído. Não importa que o ponteiro para */
-         /*o início da lista seja alterado. Afinal, este    */
-         /* ponteiro será mesmo anulado.                    */
+         /* Passa para o prï¿½ximo nï¿½ antes que o nï¿½ corrente */
+         /* seja destruï¿½do. Nï¿½o importa que o ponteiro para */
+         /*o inï¿½cio da lista seja alterado. Afinal, este    */
+         /* ponteiro serï¿½ mesmo anulado.                    */
       *lista = (*lista)->proximo;
 
-      free(p); /* Libera o espaço do nó corrente */
+      free(p); /* Libera o espaï¿½o do nï¿½ corrente */
 
-         /* Faz p apontar para o próximo nó, cujo */
-         /* endereço está armazenado em *lista    */
+         /* Faz p apontar para o prï¿½ximo nï¿½, cujo */
+         /* endereï¿½o estï¿½ armazenado em *lista    */
       p = *lista;
    } while (p);
 
       /* Neste ponto, a lista ficou vazia, pois o  */
-      /* último valor assumido por *lista foi NULL */
+      /* ï¿½ltimo valor assumido por *lista foi NULL */
 }
 
 /****
  *
- * ProximoListaSE(): Encontra o próximo nó de uma lista
+ * ProximoListaSE(): Encontra o prï¿½ximo nï¿½ de uma lista
  *                   simplesmente encadeada
  *
- * Parâmetros:
+ * Parï¿½metros:
  *     lista (entrada) - ponteiro para a lista
  *                       simplesmente encadeada
  *
- * Retorno: Endereço do conteúdo do próximo nó
+ * Retorno: Endereï¿½o do conteï¿½do do prï¿½ximo nï¿½
  *
  ****/
 tCEP_Ind *ProximoListaSE(tListaSE lista)

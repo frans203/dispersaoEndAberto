@@ -39,30 +39,25 @@
  *             tabela
  *
  ****/
-static tTabelaDEA RedimensionaTabDEA( tTabelaDEA tabela, int tamanhoTab,
-                                      tFDispersaoDEA fDispersao )
+static tTabelaDEA RedimensionaTabDEA(tTabelaDEA tabela, int tamanhoTab, tFDispersaoDEA fDispersao)
 {
-   tTabelaDEA tabelaNova;
-   int        i, tamanhoNovo = 2*tamanhoTab;
+  tTabelaDEA tabelaNova;
+  int tamanhoNovo = tamanhoTab * 2;
+  int i;
 
-   tabelaNova = calloc(tamanhoNovo, sizeof(tColetorDEA));
-   ASSEGURA(tabelaNova, "Impossivel redimensionar a tabela");
+  tabelaNova = calloc(tamanhoNovo, sizeof(tColetorDEA));
 
-      /* Inicia os coletores */
-   for (i = 0; i < tamanhoNovo; ++i)
-         /* Todos os coletores da nova tabela est�o inicialmente desocupados */
-      tabela[i].status = VAZIO;
+  for(i =0; i<tamanhoNovo; i++){
+   tabelaNova[i].status = VAZIO;
+  }
 
-      /* Transfere as chaves da tabela antiga para a tabela nova */
-   for (i = 0; i < tamanhoTab; ++i)
-      if (tabela[i].status == OCUPADO)
-         ASSEGURA( InsereDEA( tabelaNova, tamanhoNovo,
-                              tabela[i].chaveEIndice, fDispersao ),
-                   "Erro de insercao de redimensionamento");
-
-   free(tabela); /* Libera o espa�o ocupado pela tabela antiga */
-
-   return tabelaNova;
+  for(i=0;i<tamanhoTab;i++){
+   if(tabela[i].status == OCUPADO){
+      InsereDEA(tabelaNova, tamanhoNovo, tabela[i].chaveEIndice, fDispersao);
+   }
+  }
+  free(tabelaNova);
+  return tabelaNova;
 }
 
 /****

@@ -4,31 +4,31 @@
  *
  * Autor: Ulysses de Oliveira
  *
- * Data de Criação: 04/08/2008
- * Última modificação: 07/06/2016
+ * Data de Criaï¿½ï¿½o: 04/08/2008
+ * ï¿½ltima modificaï¿½ï¿½o: 07/06/2016
  *
- * Descrição: Implementação de operações de busca, inserção e
- *            remoção usando dispersão com encadeamento
+ * Descriï¿½ï¿½o: Implementaï¿½ï¿½o de operaï¿½ï¿½es de busca, inserï¿½ï¿½o e
+ *            remoï¿½ï¿½o usando dispersï¿½o com encadeamento
  *
  ****/
 
 /*********************** Includes *************************/
 
-#include "TabelaDE.h"   /* Interface deste módulo      */
-#include <stdlib.h>     /* Miscelânea de funções       */
-#include <stdio.h>      /* Funções de E/S              */
-#include <string.h>     /* Funções strxxx() e memxxx() */
+#include "TabelaDE.h"   /* Interface deste mï¿½dulo      */
+#include <stdlib.h>     /* Miscelï¿½nea de funï¿½ï¿½es       */
+#include <stdio.h>      /* Funï¿½ï¿½es de E/S              */
+#include <string.h>     /* Funï¿½ï¿½es strxxx() e memxxx() */
 #include "Registros.h"  /* Processamento de registros  */
 #include "Lista.h"      /* Lista encadeada */
 
-/********************* Funções Locais *********************/
+/********************* Funï¿½ï¿½es Locais *********************/
 
 /****
  *
  * ComparaListas(): compara duas estruturas do tipo
  *                  tElementosEmLista
  *
- * Parâmetros:
+ * Parï¿½metros:
  *      p1 (entrada) - ponteiro para a primeira estrutura
  *      p2 (entrada) - ponteiro para a segunda estrutura
  *
@@ -37,8 +37,8 @@
  *   > 0, se o campo nElementos da primeira estrutura for maior
  *   < 0, se o campo nElementos da primeira estrutura for menor
  *
- * Observação: Esta função é usada para ordenar as listas
- *             de acordo com seus números de elementos
+ * Observaï¿½ï¿½o: Esta funï¿½ï¿½o ï¿½ usada para ordenar as listas
+ *             de acordo com seus nï¿½meros de elementos
  *
  ****/
 static int ComparaListas(const void *e1, const void *e2)
@@ -49,18 +49,18 @@ static int ComparaListas(const void *e1, const void *e2)
    return (int) ec1.nElementos - ec2.nElementos;
 }
 
-/********************* Funções Globais ********************/
+/********************* Funï¿½ï¿½es Globais ********************/
 
 /****
  *
- * CriaTabelaDE(): Cria e inicializa uma tabela de dispersão
+ * CriaTabelaDE(): Cria e inicializa uma tabela de dispersï¿½o
  *                 com encadeamento
  *
- * Parâmetros:
- *      nElementos (entrada) - número de posições da tabela
- *                             de dispersão
+ * Parï¿½metros:
+ *      nElementos (entrada) - nï¿½mero de posiï¿½ï¿½es da tabela
+ *                             de dispersï¿½o
  *
- * Retorno: A tabela de dispersão criada
+ * Retorno: A tabela de dispersï¿½o criada
  *
  ****/
 tTabelaDE CriaTabelaDE(int nElementos)
@@ -68,10 +68,10 @@ tTabelaDE CriaTabelaDE(int nElementos)
    tTabelaDE tabela;
    int       i;
 
-      /* Aloca o array que representa a tabela de dispersão */
+      /* Aloca o array que representa a tabela de dispersï¿½o */
    tabela = calloc(nElementos, sizeof(tListaSE));
 
-      /* Certifica que houve alocação */
+      /* Certifica que houve alocaï¿½ï¿½o */
    ASSEGURA(tabela, "Impossivel alocar tabela de dispersao");
 
       /* Inicializa as listas encadeadas */
@@ -84,106 +84,96 @@ tTabelaDE CriaTabelaDE(int nElementos)
 /****
  *
  * BuscaDE(): Executa uma busca simples numa tabela de
- *            dispersão com encadeamento
+ *            dispersï¿½o com encadeamento
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
- *      tamTabela (entrada) - tamanho da tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
+ *      tamTabela (entrada) - tamanho da tabela de dispersï¿½o
  *      chave (entrada) - a chave de busca
- *      fDispersao (entrada) - ponteiro para a função de dispersão a ser usada
+ *      fDispersao (entrada) - ponteiro para a funï¿½ï¿½o de dispersï¿½o a ser usada
  *
- * Retorno: Índice do registro no arquivo de registros,
- *          se a chave for encontrada; -1, em caso contrário
+ * Retorno: ï¿½ndice do registro no arquivo de registros,
+ *          se a chave for encontrada; -1, em caso contrï¿½rio
  *
  ****/
 int BuscaDE(tTabelaDE tabela, int tamTabela, tCEP chave, tFDispersao fDispersao)
 {
-   int posColetor;
+  int postColetor;
+  postColetor = fDispersao(chave)%tamTabela;
 
-      /* Encontra a respectiva lista encadeada */
-   posColetor = fDispersao(chave)%tamTabela;
+  if(!(postColetor > 0 && postColetor < tamTabela)){
+   return -1;
+  }
 
-      /* A lista deve ter sido encontrada */
-   ASSEGURA( posColetor >= 0 && posColetor < tamTabela,
-             "ERRO: Impossivel localizar lista" );
-
-      /* A função BuscaListaSE() completa o serviço */
-   return BuscaListaSE(tabela + posColetor, chave);
+   //adcionar o indice encontrado a tabela pra gente conseguir fazer a busca na linked list especifica
+  return BuscaListaSE(tabela + postColetor, chave);
 }
 
 /****
  *
- * InsereDE(): Insere uma nova chave numa tabela de dispersão
+ * InsereDE(): Insere uma nova chave numa tabela de dispersï¿½o
  *             com encadeamento
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
- *      tamTabela (entrada) - tamanho da tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
+ *      tamTabela (entrada) - tamanho da tabela de dispersï¿½o
  *      conteudo (entrada) - a chave de busca e seu
- *                           respectivo índice
- *      fDispersao (entrada) - ponteiro para a função de
- *                             dispersão a ser usada
+ *                           respectivo ï¿½ndice
+ *      fDispersao (entrada) - ponteiro para a funï¿½ï¿½o de
+ *                             dispersï¿½o a ser usada
  *
  * Retorno: Nada
  *
  ****/
-void InsereDE( tTabelaDE tabela, int tamTabela,
-               const tCEP_Ind *conteudo, tFDispersao fDispersao )
-{
+void InsereDE( tTabelaDE tabela, int tamTabela, 
+const tCEP_Ind *conteudo, tFDispersao fDispersao ){
    int posColetor;
-
-      /* Encontra a lista encadeada que deverá conter a chave */
    posColetor = fDispersao(conteudo->chave)%tamTabela;
 
-      /* Garante que o índice é válido */
-   ASSEGURA( posColetor >= 0 && posColetor < tamTabela,
-             "ERRO: Impossivel localizar um lista" );
+   if(!(posColetor >= 0 && posColetor < tamTabela)){
+      return -1;
+   }
 
-      /* A função InsereListaSE() completa o serviço */
-   return InsereListaSE(&tabela[posColetor], conteudo );
+   return InsereListaSE(&tabela[posColetor], conteudo);
 }
 
 /****
  *
- * RemoveDE(): Remove um item de uma tabela dispersão com
+ * RemoveDE(): Remove um item de uma tabela dispersï¿½o com
  *             encadeamento
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
- *      tamTabela (entrada) - tamanho da tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
+ *      tamTabela (entrada) - tamanho da tabela de dispersï¿½o
  *      chave (entrada) - a chave de busca
- *      fDispersao (entrada) - ponteiro para a função de
- *                             dispersão a ser usada
+ *      fDispersao (entrada) - ponteiro para a funï¿½ï¿½o de
+ *                             dispersï¿½o a ser usada
  *
- * Retorno: 1, se a remoção foi ok; 0, caso contrário
+ * Retorno: 1, se a remoï¿½ï¿½o foi ok; 0, caso contrï¿½rio
  *
  ****/
-int RemoveDE(tTabelaDE tabela, int tamTabela, tCEP chave, tFDispersao fDispersao)
+int RemoveDE(tTabelaDE tabela, int tamTabela, tCEP chave, tFDispersao fDispercao)
 {
-   int posColetor;
+  int posColetor = fDispercao(chave)%tamTabela;
 
-      /* Encontra a lista encadeada que contém a chave */
-   posColetor = fDispersao(chave)%tamTabela;
+  if(!(posColetor >= 0 && posColetor < tamTabela)){
+   return -1;
+  }
 
-      /* Garante que o índice é válido */
-   ASSEGURA( posColetor > 0 && posColetor < tamTabela,
-             "ERRO: Impossivel localizar lista" );
-
-      /* A função RemoveListaSE() completa o serviço */
-   return RemoveListaSE(tabela +posColetor, chave);
+  return RemoveListaSE(&tabela[posColetor], chave);
 }
 
 /****
  *
- * NChavesEmListasDE(): Escreve num arquivo o número de
- *                        elementos em cada contêiner da
- *                        tabela de dispersão
+ * NChavesEmListasDE(): Escreve num arquivo o nï¿½mero de
+ *                        elementos em cada contï¿½iner da
+ *                        tabela de dispersï¿½o
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
- *      tamTabela (entrada) - tamanho da tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
+ *      tamTabela (entrada) - tamanho da tabela de dispersï¿½o
  *      stream (entrada) - stream associado ao arquivo onde o
- *                         resultado da operação será escrito
+ *                         resultado da operaï¿½ï¿½o serï¿½ escrito
  *
  * Retorno: Nada
  *
@@ -195,20 +185,20 @@ void NChavesEmListasDE( tTabelaDE tabela, int tamTabela, FILE *stream )
 
    ASSEGURA(stream, "\nStream recebido e' NULL\n");
 
-      /* Aloca o array que irá armazenar índices de */
-      /* listas e respectivos números de elementos  */
+      /* Aloca o array que irï¿½ armazenar ï¿½ndices de */
+      /* listas e respectivos nï¿½meros de elementos  */
    ar = calloc(tamTabela, sizeof(tElementosEmLista));
 
    ASSEGURA(ar, "\nNao foi possivel alocar array\n");
 
-      /* Preenche o conteúdo do array */
+      /* Preenche o conteï¿½do do array */
    for (i = 0; i < tamTabela; ++i) {
       ar[i].iLista = i;
       ar[i].nElementos = ComprimentoListaSE(tabela[i]);
    }
 
       /* Ordena o array de acordo com */
-      /* os números de elementos      */
+      /* os nï¿½meros de elementos      */
    qsort( ar, tamTabela, sizeof(tElementosEmLista),
           ComparaListas );
 
@@ -220,9 +210,9 @@ void NChavesEmListasDE( tTabelaDE tabela, int tamTabela, FILE *stream )
 
    fprintf(stream, "\n");
 
-      /* O código a seguir pode ser bastante melhorado, */
-      /* uma vez que o array é ordenado pelo número de */
-      /* elementos em cada contêiner                   */
+      /* O cï¿½digo a seguir pode ser bastante melhorado, */
+      /* uma vez que o array ï¿½ ordenado pelo nï¿½mero de */
+      /* elementos em cada contï¿½iner                   */
    for (n = 0; n <= nMax; ++n) {
       frequencia = 0;
 
@@ -235,18 +225,18 @@ void NChavesEmListasDE( tTabelaDE tabela, int tamTabela, FILE *stream )
                   "elementos:\t%4.d\n", n, frequencia );
    }
 
-   free(ar); /* O array não é mais necessário */
+   free(ar); /* O array nï¿½o ï¿½ mais necessï¿½rio */
 }
 
 /****
  *
- * NChavesDE(): Calcula o número de chaves na tabela de dispersão
+ * NChavesDE(): Calcula o nï¿½mero de chaves na tabela de dispersï¿½o
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
- *      tamTabela (entrada) - tamanho da tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
+ *      tamTabela (entrada) - tamanho da tabela de dispersï¿½o
  *
- * Retorno: O número de chaves na tabela de dispersão
+ * Retorno: O nï¿½mero de chaves na tabela de dispersï¿½o
  *
  ****/
 int NChavesDE(tTabelaDE tabela, int tamTabela)
@@ -261,15 +251,15 @@ int NChavesDE(tTabelaDE tabela, int tamTabela)
 
 /****
  *
- * NListasNaoVaziasDE(): Determina o número de listas que não
- *                     são vazias numa tabela de dispersão
+ * NListasNaoVaziasDE(): Determina o nï¿½mero de listas que nï¿½o
+ *                     sï¿½o vazias numa tabela de dispersï¿½o
  *                     com encadeamento
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
- *      tamTabela (entrada) - tamanho da tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
+ *      tamTabela (entrada) - tamanho da tabela de dispersï¿½o
  *
- * Retorno: O número de conteiners que não são vazios
+ * Retorno: O nï¿½mero de conteiners que nï¿½o sï¿½o vazios
  *
  ****/
 int NListasNaoVaziasDE( tTabelaDE tabela, int tamTabela )
@@ -285,12 +275,12 @@ int NListasNaoVaziasDE( tTabelaDE tabela, int tamTabela )
 
 /****
  *
- * DestroiTabelaDE(): Libera o espaço ocupado por uma tabela
- *                  de dispersão com encadeamento
+ * DestroiTabelaDE(): Libera o espaï¿½o ocupado por uma tabela
+ *                  de dispersï¿½o com encadeamento
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
- *      tamTabela (entrada) - tamanho da tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
+ *      tamTabela (entrada) - tamanho da tabela de dispersï¿½o
  *
  * Retorno: Nada
  *
@@ -299,12 +289,12 @@ void DestroiTabelaDE(tTabelaDE *tabela, int tamTabela)
 {
    int i;
 
-      /* Destrói as listas encadeadas */
+      /* Destrï¿½i as listas encadeadas */
    for (i = 0; i < tamTabela; ++i) {
       DestroiListaSE(*tabela + i);
    }
 
-      /* Libera o espaço ocupado pelo array */
+      /* Libera o espaï¿½o ocupado pelo array */
    free(*tabela);
 
    *tabela = NULL;

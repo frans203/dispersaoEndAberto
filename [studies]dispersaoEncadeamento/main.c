@@ -1,16 +1,16 @@
 /****
  *
- * Exemplo: Dispersão com Encadeamento
+ * Exemplo: Dispersï¿½o com Encadeamento
  *
- * Seção: 7.3.2
+ * Seï¿½ï¿½o: 7.3.2
  *
- * Descrição:
- *    -> A tabela de busca é implementada usando dispersão
- *       com encadeamento em que cada nó de uma lista encadeada
- *       contém uma chave e a posição do respectivo registro
+ * Descriï¿½ï¿½o:
+ *    -> A tabela de busca ï¿½ implementada usando dispersï¿½o
+ *       com encadeamento em que cada nï¿½ de uma lista encadeada
+ *       contï¿½m uma chave e a posiï¿½ï¿½o do respectivo registro
  *       no arquivo
  *
- *    -> Os registros são mantidos em arquivo
+ *    -> Os registros sï¿½o mantidos em arquivo
  *
  *    -> Tipo de busca: linear
  *
@@ -20,21 +20,21 @@
 
 /*********************** Includes *************************/
 
-#include <math.h>      /* Funções matemáticas   */
-#include <stdlib.h>    /* Miscelânea de funções */
-#include <stdio.h>     /* Funções de Entrada/Saída    */
-#include <string.h>    /* Funções memXXX() e strXXX() */
-#include <time.h>      /* Medição de tempo         */
+#include <math.h>      /* Funï¿½ï¿½es matemï¿½ticas   */
+#include <stdlib.h>    /* Miscelï¿½nea de funï¿½ï¿½es */
+#include <stdio.h>     /* Funï¿½ï¿½es de Entrada/Saï¿½da    */
+#include <string.h>    /* Funï¿½ï¿½es memXXX() e strXXX() */
+#include <time.h>      /* Mediï¿½ï¿½o de tempo         */
 #include <limits.h>    /* Limites dos tipos inteiros */
 #include "Macros.h"    /* Macros usadas pelo programa */
 #include "Tipos.h"     /* Tipos usados pelo programa  */
-#include "TabelaDE.h"  /* Funções que lidam com      */
-                       /* dispersão com encadeamento */
+#include "TabelaDE.h"  /* Funï¿½ï¿½es que lidam com      */
+                       /* dispersï¿½o com encadeamento */
 #include "Registros.h" /* Processamento de registros     */
-#include "leitura.h"   /* Funções de leitura via teclado */
+#include "leitura.h"   /* Funï¿½ï¿½es de leitura via teclado */
 #include "Lista.h"     /* Lista encadeada */
 
-/******************* Alusões de Funções *******************/
+/******************* Alusï¿½es de Funï¿½ï¿½es *******************/
 
 extern unsigned int DispersaoModular(const char *chave);
 extern unsigned int DispersaoPolinomial(const char *chave);
@@ -48,44 +48,44 @@ extern void AtualizaArquivoBin( const char *nomeArquivo,
                                 tListaSE removidos );
 extern void MedidaDeTempo(void);
 
-/********************* Funções de dispersão ********************/
+/********************* Funï¿½ï¿½es de dispersï¿½o ********************/
 
 /****
  *
- * DispersaoModular(): Calcula o valor de dispersão de uma chave
+ * DispersaoModular(): Calcula o valor de dispersï¿½o de uma chave
  *                     convertendo-a num valor inteiro
  *
- * Parâmetros:
- *      chave (entrada) - a chave que terá seu valor de dispersão
+ * Parï¿½metros:
+ *      chave (entrada) - a chave que terï¿½ seu valor de dispersï¿½o
  *                        calculado
  *
- * Retorno: O valor dispersão da chave recebida como parâmetro
+ * Retorno: O valor dispersï¿½o da chave recebida como parï¿½metro
  *
  ****/
-unsigned int DispersaoModular(const char *chave)
+unsigned int DispersaoModular(const char * chave)
 {
-   return (unsigned int) atoi(chave);
+   return (unsigned int)atoi(chave);
 }
 
 /****
  *
- * DispersaoPolinomial(): Calcula o valor de dispersão de uma
- *                        chave usando o método polinomial
+ * DispersaoPolinomial(): Calcula o valor de dispersï¿½o de uma
+ *                        chave usando o mï¿½todo polinomial
  *
- * Parâmetros:
- *      chave (entrada) - a chave que terá seu valor de
- *                        dispersão calculado
+ * Parï¿½metros:
+ *      chave (entrada) - a chave que terï¿½ seu valor de
+ *                        dispersï¿½o calculado
  *
- * Retorno: O valor de dispersão da chave recebida como parâmetro
+ * Retorno: O valor de dispersï¿½o da chave recebida como parï¿½metro
  *
  ****/
-unsigned int DispersaoPolinomial(const char *chave)
+unsigned int DispersaoPolinomial(const char * chave)
 {
    unsigned int dispersao = 0,
                 base = 2,
                 primo = 31;
 
-   while (*chave) {
+   while(*chave){
       dispersao = (dispersao*base + *chave++)%primo;
    }
 
@@ -94,64 +94,62 @@ unsigned int DispersaoPolinomial(const char *chave)
 
 /****
  *
- * DispersaoMultiplicativa(): Calcula o valor de dispersão de uma
- *                            chave usando o método multiplicativo
+ * DispersaoMultiplicativa(): Calcula o valor de dispersï¿½o de uma
+ *                            chave usando o mï¿½todo multiplicativo
  *
- * Parâmetros:
- *      chave (entrada) - a chave que terá seu valor de
- *                        dispersão calculado
+ * Parï¿½metros:
+ *      chave (entrada) - a chave que terï¿½ seu valor de
+ *                        dispersï¿½o calculado
  *
- * Retorno: O valor de dispersão da chave recebida como parâmetro
+ * Retorno: O valor de dispersï¿½o da chave recebida como parï¿½metro
  *
  ****/
-unsigned int DispersaoMultiplicativa(const char *str)
+unsigned int DispersaoMultiplicativa(const char * str)
 {
    unsigned int dispersao = 0;
-   double       a = (sqrt(5) - 1)/2,
-                pInteira,
-                pFracionaria;
+   double a = (sqrt(5) - 1)/2, pInteira, pFracionaria;
    unsigned int tamTabela = 13;
+
 
    pFracionaria = modf(atoi(str)*a, &pInteira);
 
-   dispersao = (unsigned int) floor(tamTabela*pFracionaria);
+   dispersao = (unsigned int) floor(tamTabela * pFracionaria);
 
    return dispersao;
 }
 
 /****
  *
- * DispersaoRotativa(): Calcula o valor de dispersão de uma
- *                            chave usando o método rotativo
+ * DispersaoRotativa(): Calcula o valor de dispersï¿½o de uma
+ *                            chave usando o mï¿½todo rotativo
  *
- * Parâmetros:
- *      chave (entrada) - a chave que terá seu valor de
- *                        dispersão calculado
+ * Parï¿½metros:
+ *      chave (entrada) - a chave que terï¿½ seu valor de
+ *                        dispersï¿½o calculado
  *
- * Retorno: O valor de dispersão da chave recebida como parâmetro
+ * Retorno: O valor de dispersï¿½o da chave recebida como parï¿½metro
  *
  ****/
 unsigned int DispersaoRotativa(const char *chave)
 {
-   unsigned int dispersao = 0;
+  unsigned int dispersao = 0;
+  while(*chave){
+   dispersao = (dispersao << 4) ^ (dispersao >> 28) ^ (*chave);
+   chave++;
+  }
 
-   while (*chave) {
-       dispersao = (dispersao << 4) ^
-                   (dispersao >> 28) ^ (*chave++);
-   }
-
-   return dispersao;
+  return dispersao;
 }
 
-/********************* Funções Locais *********************/
+/********************* Funï¿½ï¿½es Locais *********************/
 
 /****
  *
- * EhPrimo(): Verifica se um número inteiro é primo
+ * EhPrimo(): Verifica se um nï¿½mero inteiro ï¿½ primo
  *
- * Parâmetros: valor (entrada) - o número que será verificado
+ * Parï¿½metros: valor (entrada) - o nï¿½mero que serï¿½ verificado
  *
- * Retorno: 1, se o número for primo; 0, em caso contrário
+ * Retorno: 1, se o nï¿½mero for primo; 0, em caso contrï¿½rio
  *
  ****/
 int EhPrimo(int valor)
@@ -161,68 +159,68 @@ int EhPrimo(int valor)
    if (valor < 2)
       return 0;
 
-      /* No máximo, um número qualquer é divisível por sua metade */
+      /* No mï¿½ximo, um nï¿½mero qualquer ï¿½ divisï¿½vel por sua metade */
    metade = valor/2;
 
       /* Tenta encontrar um divisor do valor recebido */
    while (divisor <= metade) {
       if ( !(valor % divisor) ) /* Se foi encontrado um divisor, ... */
-         return 0; /* ...o número não é primo */
+         return 0; /* ...o nï¿½mero nï¿½o ï¿½ primo */
 
       divisor++;
    }
 
-   return 1; /* Não foi encontrado nenhum divisor */
+   return 1; /* Nï¿½o foi encontrado nenhum divisor */
 }
 
 /****
  *
- * ProximoPrimo(): Retorna o menor inteiro primo positivo que é
+ * ProximoPrimo(): Retorna o menor inteiro primo positivo que ï¿½
  *                 maior do que ou igual ao valor recebido como
- *                 parâmetro
+ *                 parï¿½metro
  *
- * Parâmetros: valor (entrada) - o número que será verificado
+ * Parï¿½metros: valor (entrada) - o nï¿½mero que serï¿½ verificado
  *
- * Retorno: O menor inteiro primo positivo que é maior do que
- *          ou igual ao valor recebido como parâmetro; ou 0,
+ * Retorno: O menor inteiro primo positivo que ï¿½ maior do que
+ *          ou igual ao valor recebido como parï¿½metro; ou 0,
  *          se o valor recebido for menor do que ou igual a 1,
- *          ou se não for possível encontrar um número primo
+ *          ou se nï¿½o for possï¿½vel encontrar um nï¿½mero primo
  *          que caiba no tipo int.
  *
  ****/
 int ProximoPrimo(int valor)
 {
-      /* Esta função não lida com valores */
+      /* Esta funï¿½ï¿½o nï¿½o lida com valores */
       /* menores do que ou iguais a 1     */
    if (valor <= 1)
       return 0;
 
-      /* Tenta encontrar um número primo por meio de tentativas */
+      /* Tenta encontrar um nï¿½mero primo por meio de tentativas */
    while (valor <= INT_MAX) {
-      if ( EhPrimo(valor) ) /* Se for encontrado um número   */
-         return valor;      /* primo, retorna-se ele próprio */
+      if ( EhPrimo(valor) ) /* Se for encontrado um nï¿½mero   */
+         return valor;      /* primo, retorna-se ele prï¿½prio */
 
       valor++;
    }
 
-      /* Não foi encontrado nenhum número */
+      /* Nï¿½o foi encontrado nenhum nï¿½mero */
       /* primo que caiba no tipo int      */
    return 0;
 }
 
 /****
  *
- * ConstroiTabela(): Lê arquivo de dados (binário) contendo
- *                   os registros e constrói uma tabela de
- *                   dispersão
+ * ConstroiTabela(): Lï¿½ arquivo de dados (binï¿½rio) contendo
+ *                   os registros e constrï¿½i uma tabela de
+ *                   dispersï¿½o
  *
- * Parâmetros:
+ * Parï¿½metros:
  *      stream (entrada) - stream associado ao arquivo de
  *                         registros
- *      tamTabela (saída) - tamanho da tabela criada
+ *      tamTabela (saï¿½da) - tamanho da tabela criada
  *
- * Retorno: Ponteiro para a tabela criada, se a função
- *          for bem sucedida; NULL, em caso contrário
+ * Retorno: Ponteiro para a tabela criada, se a funï¿½ï¿½o
+ *          for bem sucedida; NULL, em caso contrï¿½rio
  *
  ****/
 static tTabelaDE ConstroiTabela(FILE *stream, tFDispersao fDispersao,
@@ -234,14 +232,14 @@ static tTabelaDE ConstroiTabela(FILE *stream, tFDispersao fDispersao,
    int       pos = 0;
 
    if (!stream)
-      return NULL;   /* Stream é nulo */
+      return NULL;   /* Stream ï¿½ nulo */
 
-         /* Calcula o número de listas na tabela */
+         /* Calcula o nï¿½mero de listas na tabela */
    *tamTabela = NumeroDeRegistros(stream, sizeof(tRegistroCEP)) /
                 FATOR_DE_CARGA;
 
       /* Se for desejado que o tamanho da tabela  seja um */
-      /* número primo, obtém-se o próximo número primo    */
+      /* nï¿½mero primo, obtï¿½m-se o prï¿½ximo nï¿½mero primo    */
       /* maior do que o tamanho da tabela                 */
    if (usaPrimo && !EhPrimo(*tamTabela))
       *tamTabela = ProximoPrimo(*tamTabela);
@@ -251,13 +249,13 @@ static tTabelaDE ConstroiTabela(FILE *stream, tFDispersao fDispersao,
 
       /* Chamando sempre rewind() antes de qualquer  */
       /* processamento sequencial pode trazer grande */
-      /* economia em tempo de depuração!             */
+      /* economia em tempo de depuraï¿½ï¿½o!             */
    rewind(stream);
 
-      /* Lê cada registro do arquivo e acrescenta */
+      /* Lï¿½ cada registro do arquivo e acrescenta */
       /* sua chave (CEP) na lista                 */
    while (1) {
-         /* Lê um registro no arquivo */
+         /* Lï¿½ um registro no arquivo */
       fread( &umRegistro, sizeof(umRegistro), 1, stream);
 
          /* Verifica se ocorreu erro ou o */
@@ -266,18 +264,18 @@ static tTabelaDE ConstroiTabela(FILE *stream, tFDispersao fDispersao,
          break;
       }
 
-         /* A chave não é armazenada como string no registro. */
-         /* Portanto, não se pode usar strcpy().              */
+         /* A chave nï¿½o ï¿½ armazenada como string no registro. */
+         /* Portanto, nï¿½o se pode usar strcpy().              */
       strncpy(conteudo.chave, umRegistro.CEP, TAM_CEP);
 
-         /* Transforma a chave num string. Isso não é */
+         /* Transforma a chave num string. Isso nï¿½o ï¿½ */
          /* essencial, mas facilita o processamnto.   */
       conteudo.chave[TAM_CEP] = '\0';
 
-         /* Índice do registro que contém a chave no arquivo */
+         /* ï¿½ndice do registro que contï¿½m a chave no arquivo */
       conteudo.indice = pos++;
 
-         /* Acrescenta a chave à tabela de dispersão */
+         /* Acrescenta a chave ï¿½ tabela de dispersï¿½o */
       InsereDE(aTabela, *tamTabela, &conteudo, fDispersao);
    }
 
@@ -292,13 +290,13 @@ static tTabelaDE ConstroiTabela(FILE *stream, tFDispersao fDispersao,
 
 /****
  *
- * EscolheFuncao(): Apresenta um menu de funções de dispersão
- *                      alternativas e permite que o usuário
+ * EscolheFuncao(): Apresenta um menu de funï¿½ï¿½es de dispersï¿½o
+ *                      alternativas e permite que o usuï¿½rio
  *                      escolha uma delas
  *
- * Parâmetros: Nenhum
+ * Parï¿½metros: Nenhum
  *
- * Retorno: Ponteiro para a função de dispersão escolhida.
+ * Retorno: Ponteiro para a funï¿½ï¿½o de dispersï¿½o escolhida.
  *
  ****/
 tFDispersao EscolheFuncao(void)
@@ -328,12 +326,12 @@ tFDispersao EscolheFuncao(void)
 
 /****
  *
- * ApresentaMenu(): Apresenta um menu de opções para o usuário
+ * ApresentaMenu(): Apresenta um menu de opï¿½ï¿½es para o usuï¿½rio
  *
- * Parâmetros:
+ * Parï¿½metros:
  *      opcoes[] (entrada) - array de strings contendo as
- *                           opções do usuário
- *      nOpcoes (entrada) - o número de opções
+ *                           opï¿½ï¿½es do usuï¿½rio
+ *      nOpcoes (entrada) - o nï¿½mero de opï¿½ï¿½es
  *
  * Retorno: Nada
  *
@@ -352,15 +350,15 @@ void ApresentaMenu(const char *opcoes[], int nOpcoes)
 
 /****
  *
- * AtualizaArquivoBin(): Cria um novo arquivo binário contendo
- *                       cada registro de outro arquivo binário
- *                       cuja chave não faça parte de uma lista
+ * AtualizaArquivoBin(): Cria um novo arquivo binï¿½rio contendo
+ *                       cada registro de outro arquivo binï¿½rio
+ *                       cuja chave nï¿½o faï¿½a parte de uma lista
  *                       de registros que devem ser removidos
  *
- * Parâmetros:
- *      nomeArquivo (entrada) - nome do arquivo binário original
+ * Parï¿½metros:
+ *      nomeArquivo (entrada) - nome do arquivo binï¿½rio original
  *      removidos (entrada) - lista contendo as estruturas que
- *                            NÃO serão escritas no novo arquivo
+ *                            Nï¿½O serï¿½o escritas no novo arquivo
  *
  * Retorno: Nenhum
  *
@@ -368,29 +366,29 @@ void ApresentaMenu(const char *opcoes[], int nOpcoes)
 void AtualizaArquivoBin( const char *nomeArquivo,
                          tListaSE removidos )
 {
-   char      ar[L_tmpnam]; /* Nome de um arquivo temporário */
+   char      ar[L_tmpnam]; /* Nome de um arquivo temporï¿½rio */
    FILE     *stream, /* Stream associado ao arquivo original */
-            *streamTmp; /* Stream associado ao temporário */
+            *streamTmp; /* Stream associado ao temporï¿½rio */
    tRegistroCEP umRegistro; /* Um registro do arquivo */
    tCEP    umaChave;
-   int       ocorreuErro = 0; /* Indicará se ocorreu erro */
+   int       ocorreuErro = 0; /* Indicarï¿½ se ocorreu erro */
 
       /* Tenta abrir o arquivo original para leitura */
    ASSEGURA( stream = fopen(nomeArquivo, "rb"),
              "Nao foi possivel atualizar arquivo" );
 
-      /* Obtém o nome de um arquivo temporário */
+      /* Obtï¿½m o nome de um arquivo temporï¿½rio */
    tmpnam(ar);
 
-      /* Tenta abrir o arquivo temporário */
-      /* para escrita em modo binário     */
+      /* Tenta abrir o arquivo temporï¿½rio */
+      /* para escrita em modo binï¿½rio     */
    ASSEGURA( streamTmp = fopen(ar, "wb"),
              "Nao foi possivel criar arquivo temporario" );
 
-      /* O laço encerra quando não for */
-      /* mais possível ler um registro */
+      /* O laï¿½o encerra quando nï¿½o for */
+      /* mais possï¿½vel ler um registro */
    while (1) {
-         /* Lê um registro no arquivo de entrada */
+         /* Lï¿½ um registro no arquivo de entrada */
       fread(&umRegistro, sizeof(umRegistro), 1, stream);
 
          /* Testa se o final do arquivo de entrada  */
@@ -400,14 +398,14 @@ void AtualizaArquivoBin( const char *nomeArquivo,
       }
 
          /* Cria uma chave (string). O campo CEP */
-         /* do registro não é string.            */
+         /* do registro nï¿½o ï¿½ string.            */
       strncpy(umaChave, umRegistro.CEP, TAM_CEP);
       umaChave[TAM_CEP] = '\0';
 
-         /* Se a chave do registro lido não faz parte da  */
+         /* Se a chave do registro lido nï¿½o faz parte da  */
          /* lista de removidos, escreve-o no novo arquivo */
       if (BuscaListaSE(&removidos, umaChave) < 0) {
-            /* Escreve o registro lido no arquivo temporário */
+            /* Escreve o registro lido no arquivo temporï¿½rio */
          fwrite(&umRegistro, sizeof(umRegistro), 1, streamTmp);
 
             /* Verifica se ocorreu erro de escrita */
@@ -431,7 +429,7 @@ void AtualizaArquivoBin( const char *nomeArquivo,
    ASSEGURA( !remove(nomeArquivo),
              "Impossivel remover o arquivo antigo" );
 
-      /* Tenta rebatizar o arquivo temporário */
+      /* Tenta rebatizar o arquivo temporï¿½rio */
       /* com o nome do arquivo original       */
    ocorreuErro = rename(ar, nomeArquivo);
 
@@ -448,15 +446,15 @@ void AtualizaArquivoBin( const char *nomeArquivo,
  * MedidaDeTempo(): Mede intervalos de tempo entre duas
  *                  chamadas consecutivas
  *
- * Parâmetros: Nenhum
+ * Parï¿½metros: Nenhum
  *
  * Retorno: Nada
  *
- * Observação: Esta função deve ser chamada aos pares; i.e.,
- *             na primeira chamada ela marca o início da
+ * Observaï¿½ï¿½o: Esta funï¿½ï¿½o deve ser chamada aos pares; i.e.,
+ *             na primeira chamada ela marca o inï¿½cio da
  *             contagem de tempo e na segunda chamada ela
  *             apresenta o intervalo de tempo decorrido
- *             desde a última chamada
+ *             desde a ï¿½ltima chamada
  *
  ****/
 void MedidaDeTempo(void)
@@ -465,15 +463,15 @@ void MedidaDeTempo(void)
    static time_t t0; /* Instante inicial */
    time_t        tf; /* Instante final   */
 
-      /* Esta função foi chamada mais uma vez */
+      /* Esta funï¿½ï¿½o foi chamada mais uma vez */
    ++numeroDeChamadas;
 
-      /* Se o número da chamada for ímpar, esta */
-      /* chamada é a primeira de um par         */
+      /* Se o nï¿½mero da chamada for ï¿½mpar, esta */
+      /* chamada ï¿½ a primeira de um par         */
    if (numeroDeChamadas%2) { /* Calcula o instante inicial */
       t0 = time(NULL);
    } else { /* Calcula e apresenta o intervalo de   */
-            /* tempo entre as duas últimas chamadas */
+            /* tempo entre as duas ï¿½ltimas chamadas */
       tf = time(NULL);
 
       printf( "\n\n\t*** Tempo gasto na operacao: "
@@ -481,14 +479,14 @@ void MedidaDeTempo(void)
    }
 }
 
-/********************* Função main() **********************/
+/********************* Funï¿½ï¿½o main() **********************/
 
 /****
  *
- * main(): Testa funções de busca, inserção, remoção e
- *         atualização usando dispersão com encadeamento
+ * main(): Testa funï¿½ï¿½es de busca, inserï¿½ï¿½o, remoï¿½ï¿½o e
+ *         atualizaï¿½ï¿½o usando dispersï¿½o com encadeamento
  *
- * Parâmetros: nenhum
+ * Parï¿½metros: nenhum
  *
  * Retorno: 0
  *
@@ -515,11 +513,11 @@ int main(void)
                 nOpcoes = sizeof(opcoes)/sizeof(opcoes[0]),
                 tamanhoEhPrimo = 0,
                 nRegistros,
-                primeiroByte, /* Indica a posição do */
+                primeiroByte, /* Indica a posiï¿½ï¿½o do */
                               /* primeiro byte de um */
                               /* registro no arquivo */
                 atualizarArq = 0; /* Indica se o arquivo */
-                                  /* de registros será   */
+                                  /* de registros serï¿½   */
                                   /* atualizado          */
    tListaSE    removidos; /* Chaves dos registros a ser  */
                           /* removidos quando o arquivo  */
@@ -533,11 +531,11 @@ int main(void)
             "\nImpossivel abrir arquivo de registros\n");
 
 recomeco:
-      /* Escolhe a função de dispersão */
+      /* Escolhe a funï¿½ï¿½o de dispersï¿½o */
    fDispersao = EscolheFuncao();
 
    /*                                                        */
-   /* Verifica se o o tamanho da tabela será um número primo */
+   /* Verifica se o o tamanho da tabela serï¿½ um nï¿½mero primo */
    /*                                                        */
 
    printf("\n\n\t>>> Deseja que o tamanho da tabela "
@@ -550,41 +548,41 @@ recomeco:
    MedidaDeTempo();
    printf("\nCriando tabela...");
 
-      /* Lê o arquivo e cria a tabela de dispersão */
+      /* Lï¿½ o arquivo e cria a tabela de dispersï¿½o */
    tabela = ConstroiTabela( stream, fDispersao,
                             &tamTabela, tamanhoEhPrimo );
 
-      /* Certifica-se que a criação da tabela foi OK */
+      /* Certifica-se que a criaï¿½ï¿½o da tabela foi OK */
    ASSEGURA(tabela, "\nNao foi possivel criar a tabela\n");
 
    printf("\n...tabela criada com sucesso\n");
    MedidaDeTempo();
 
-      /* Obtém o número de registros do arquivo */
+      /* Obtï¿½m o nï¿½mero de registros do arquivo */
    nRegistros = NumeroDeRegistros( stream,
                                    sizeof(umRegistro) );
 
-      /* Inicia a lista que armazena os índices */
+      /* Inicia a lista que armazena os ï¿½ndices */
       /* dos registros removidos                */
    IniciaListaSE(&removidos);
 
-      /* O laço a seguir encerra quando o usuário */
-      /* escolher a opção de encerramento         */
+      /* O laï¿½o a seguir encerra quando o usuï¿½rio */
+      /* escolher a opï¿½ï¿½o de encerramento         */
    while (1) {
-         /* Apresenta menu de opções do programa */
-         /* e lê a opção do usuário              */
+         /* Apresenta menu de opï¿½ï¿½es do programa */
+         /* e lï¿½ a opï¿½ï¿½o do usuï¿½rio              */
       ApresentaMenu(opcoes, nOpcoes);
       op = LeOpcao("1234567");
 
-         /* Verifica se o usuário quer encerrar o programa */
+         /* Verifica se o usuï¿½rio quer encerrar o programa */
       if (op == '7') {
-            /* Fecha o arquivo que contém os registros */
+            /* Fecha o arquivo que contï¿½m os registros */
          fclose(stream);
 
-            /* Libera o espaço ocupado pela tabela */
+            /* Libera o espaï¿½o ocupado pela tabela */
          DestroiTabelaDE(&tabela, tamTabela);
 
-         break; /* Encerra o laço*/
+         break; /* Encerra o laï¿½o*/
       }
 
       switch (op) {
@@ -618,7 +616,7 @@ recomeco:
             break;
 
          case '2': /* Numero de CEPs em cada lista */
-               /* Cria arquivo que conterá o resultado */
+               /* Cria arquivo que conterï¿½ o resultado */
             streamChavesEmListas = fopen(NOME_ARQ_CHAVES, "w");
 
                /* Certifica-se que o arquivo foi aberto */
@@ -634,36 +632,36 @@ recomeco:
             break;
 
          case '3': /* Consulta dados de um CEP */
-               /* Lê um CEP introduzido pelo usuário */
+               /* Lï¿½ um CEP introduzido pelo usuï¿½rio */
             LeMatricula("CEP", umCEP, TAM_CEP + 1);
 
                /* Procura o CEP na tabela de busca */
             pos = BuscaDE(tabela, tamTabela, umCEP, fDispersao);
 
                /* Se a chave for encontrada, utiliza-se */
-               /* seu índice para recuperar o registro  */
+               /* seu ï¿½ndice para recuperar o registro  */
                /* correspondente no arquivo             */
             if (pos < 0) {
                printf("\n>>> CEP nao foi encontrado\n");
             } else {
-                  /* Utilizando o índice do registro, */
-                  /* calcula-se a posição no arquivo  */
+                  /* Utilizando o ï¿½ndice do registro, */
+                  /* calcula-se a posiï¿½ï¿½o no arquivo  */
                   /* do primeiro byte do registro     */
                primeiroByte = pos*sizeof(tRegistroCEP);
 
-                  /* Move apontador de posição para o     */
+                  /* Move apontador de posiï¿½ï¿½o para o     */
                   /* primeiro byte do registro. Se isso   */
-                  /* não for possível, aborta o programa. */
+                  /* nï¿½o for possï¿½vel, aborta o programa. */
                ASSEGURA( !fseek(stream, primeiroByte, SEEK_SET),
                          "Erro de posicionamento em arquivo" );
 
-                  /* Lê o registro no arquivo */
+                  /* Lï¿½ o registro no arquivo */
                fread(&umRegistro, sizeof(umRegistro), 1, stream);
 
                   /* Se ocorreu erro de leitura aborta */
                ASSEGURA(!ferror(stream), "Erro de leitura");
 
-                  /* Apresenta o registro ao usuário */
+                  /* Apresenta o registro ao usuï¿½rio */
                ExibeRegistro(&umRegistro);
 
                putchar('\n'); /* Embelezamento */
@@ -672,17 +670,17 @@ recomeco:
             break;
 
          case '4': /* Acrescenta um CEP */
-               /* Lê dados do novo CEP */
+               /* Lï¿½ dados do novo CEP */
             LeRegistro(&umRegistro);
 
-               /* O valor do campo 'numero' corresponde à */
-               /* posição do registro no arquivo de CEPs  */
-               /* (isso é coisa dos Correios)             */
+               /* O valor do campo 'numero' corresponde ï¿½ */
+               /* posiï¿½ï¿½o do registro no arquivo de CEPs  */
+               /* (isso ï¿½ coisa dos Correios)             */
             umRegistro.numero = nRegistros + 1;
 
                /* Cria a chave a ser inserida na tabela de */
-               /* busca. Na tabela, a chabe é um string    */
-               /* mas no registro CEP não é string         */
+               /* busca. Na tabela, a chabe ï¿½ um string    */
+               /* mas no registro CEP nï¿½o ï¿½ string         */
             strncpy(conteudo.chave, umRegistro.CEP, TAM_CEP);
 
                /* Torna a chave um string */
@@ -690,11 +688,11 @@ recomeco:
 
             conteudo.indice = nRegistros + 1;
 
-               /* Acrescemta novo elemento à tabela de busca */
+               /* Acrescemta novo elemento ï¿½ tabela de busca */
             InsereDE( tabela, tamTabela, &conteudo, fDispersao );
 
-               /* Move apontador de posição para o final */
-               /* do arquivo. Se isso não for possível,  */
+               /* Move apontador de posiï¿½ï¿½o para o final */
+               /* do arquivo. Se isso nï¿½o for possï¿½vel,  */
                /* aborta o programa.                     */
             ASSEGURA( !fseek(stream, 0, SEEK_END),
                       "Erro de posicionamento em arquivo");
@@ -713,7 +711,7 @@ recomeco:
             break;
 
          case '5': /* Remove um CEP */
-               /* Lê um CEP introduzido pelo usuário */
+               /* Lï¿½ um CEP introduzido pelo usuï¿½rio */
             LeMatricula("CEP", umCEP, TAM_CEP + 1);
 
                /* Tenta remover o CEP da tabela de busca */
@@ -721,28 +719,28 @@ recomeco:
 
                /* Se a chave foi removida acrescenta-se   */
                /* um novo elemento na lista de removidos. */
-               /* A remoçãodo registro do arquivo só será */
+               /* A remoï¿½ï¿½odo registro do arquivo sï¿½ serï¿½ */
                /* efetuada ao final do programa.          */
 
             if (pos >= 0) { /* O CEP foi removido */
                   /* Cria um novo elemento e acrescenta-o */
-                  /* à lista de removidos                 */
+                  /* ï¿½ lista de removidos                 */
                strcpy(conteudo.chave, umCEP);
                InsereListaSE(&removidos, &conteudo);
 
-                  /* Arquivo de registros precisará */
+                  /* Arquivo de registros precisarï¿½ */
                   /* ser atualizado                 */
                atualizarArq = 1;
 
                printf("\n>>> Remocao bem sucedida\n");
-            } else { /* O CEP não se encontra na tabela */
+            } else { /* O CEP nï¿½o se encontra na tabela */
                printf("\n>>> CEP nao encontrado\n");
             }
 
             break;
 
          case '6': /* Remove um CEP */
-               /* Libera o espaço ocupado pela tabela */
+               /* Libera o espaï¿½o ocupado pela tabela */
             MedidaDeTempo();
             printf("\nDestruindo tabela...");
             DestroiTabelaDE(&tabela, tamTabela);
@@ -759,18 +757,18 @@ recomeco:
 
             break;
 
-         default: /* O programa não deve chegar até aqui */
+         default: /* O programa nï¿½o deve chegar atï¿½ aqui */
             printf("\nEste programa contem um erro\n");
             return 1;
       } /* switch */
    } /* while */
 
-      /* Atualiza arquivo binário se for necessário */
+      /* Atualiza arquivo binï¿½rio se for necessï¿½rio */
    if (atualizarArq) {
       MedidaDeTempo();
       printf("\nAtualizando arquivo...");
 
-         /* Atualiza arquivo binário */
+         /* Atualiza arquivo binï¿½rio */
       AtualizaArquivoBin(NOME_ARQUIVO_BIN, removidos);
 
       printf("\n... Atualizacao bem sucedida");
@@ -782,7 +780,7 @@ recomeco:
    return 0;
 }
 
-/******************* Exemplo de Execução ******************
+/******************* Exemplo de Execuï¿½ï¿½o ******************
 
 
 **********************************************************/

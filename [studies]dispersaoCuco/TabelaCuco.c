@@ -4,92 +4,75 @@
  *
  * Autor: Ulysses de Oliveira
  *
- * Data de Criação: 04/08/2008
- * Última modificação: 08/06/2010
+ * Data de Criaï¿½ï¿½o: 04/08/2008
+ * ï¿½ltima modificaï¿½ï¿½o: 08/06/2010
  *
- * Descrição: Implementação de operações de busca, inserção e
- *            remoção usando dispersão aberto
+ * Descriï¿½ï¿½o: Implementaï¿½ï¿½o de operaï¿½ï¿½es de busca, inserï¿½ï¿½o e
+ *            remoï¿½ï¿½o usando dispersï¿½o aberto
  *
  ****/
 
 /*********************** Includes *************************/
 
-#include <stdlib.h>     /* Miscelânea de funções       */
-#include <stdio.h>      /* Funções de E/S              */
-#include <string.h>     /* Funções strxxx() e memxxx() */
-#include <math.h>     /* Funções strxxx() e memxxx() */
-#include "TabelaCuco.h"  /* Interface deste módulo      */
+#include <stdlib.h>     /* Miscelï¿½nea de funï¿½ï¿½es       */
+#include <stdio.h>      /* Funï¿½ï¿½es de E/S              */
+#include <string.h>     /* Funï¿½ï¿½es strxxx() e memxxx() */
+#include <math.h>     /* Funï¿½ï¿½es strxxx() e memxxx() */
+#include "TabelaCuco.h"  /* Interface deste mï¿½dulo      */
 #include "Registros.h"  /* Processamento de registros  */
 
-/********************* Funções Locais *********************/
+/********************* Funï¿½ï¿½es Locais *********************/
 
 /****
  *
- * RedimensionaCuco(): Redimensiona uma tabela de dispersão cuco
+ * RedimensionaCuco(): Redimensiona uma tabela de dispersï¿½o cuco
  *
- * Parâmetros:
- *     tabela (entrada/saída) - a tabela de dispersão
- *     chaveEIndice (entrada) - o par chave/índice que será inserido
- *                              após o redimensionamento da tabela
+ * Parï¿½metros:
+ *     tabela (entrada/saï¿½da) - a tabela de dispersï¿½o
+ *     chaveEIndice (entrada) - o par chave/ï¿½ndice que serï¿½ inserido
+ *                              apï¿½s o redimensionamento da tabela
  *
  * Retorno: Nada
  *
  ****/
 static void RedimensionaCuco(tTabelaCuco *tabela, tCEP_Ind chaveEIndice)
 {
-   tTabelaCuco novaTabela; /* A nova tabela */
-   int         i,
-               teste, /* Resultado de uma inserção */
-               novoTamanho; /* Tamanho da nova tabela */
+   tTabelaCuco novaTabela;
+   int i, teste, novoTamanho;
 
-      /* O novo tamanho será 50% maior do que o antigo valor */
    novoTamanho = 1.5*tabela->tam;
 
-      /* Cria uma nova tabela de dispersão cuco */
    CriaTabelaCuco(&novaTabela, novoTamanho, tabela->fD1, tabela->fD2);
 
-      /* Insere as chaves da antiga tabela na nova tabela */
-   for (i = 0; i < tabela->tam; ++i) {
-         /* Verifica se a posição corrente da primeira tabela contém uma chave */
-      if (tabela->tab1[i].status == OCUPADO) {
-            /* Existe uma chave nesta posição */
-         teste = InsereCuco( &novaTabela, tabela->tab1[i].chaveEIndice );
-            /* Esta inserção não pode falhar */
-         ASSEGURA( teste, "Falha de insercao em redimensionamento" );
+   for(i =0 ;i<tabela->tam;i++){
+      if(tabela->tab1[i].status == OCUPADO){
+         InsereCuco(&novaTabela, tabela->tab1[i].chaveEIndice);
       }
 
-         /* Verifica se a posição corrente da segunda tabela contém uma chave */
-      if (tabela->tab2[i].status == OCUPADO) {
-            /* Existe uma chave nesta posição */
-         teste = InsereCuco( &novaTabela, tabela->tab2[i].chaveEIndice );
-            /* Esta inserção não pode falhar */
-         ASSEGURA( teste, "Falha de insercao em redimensionamento" );
+      if(tabela->tab2[i].status == OCUPADO){
+         InsereCuco(&novaTabela, tabela->tab2[i].chaveEIndice);
       }
    }
 
-      /* Neste ponto, todas as chaves da antiga tabela foram inseridas, */
-      /* de modo que a tabela antiga pode ser extinta                   */
    DestroiTabelaCuco(tabela);
 
-   *tabela = novaTabela; /* Substitui a tabela antiga com a nova tabela */
+   *tabela = novaTabela;
 
-    teste = InsereCuco(tabela, chaveEIndice); /* Insere a chave que restou */
+   InsereCuco(tabela, chaveEIndice);
 
-      /* Esta inserção não pode falhar */
-    ASSEGURA(teste, "Falha de insercao em redimensionamento");
 }
 
-/********************* Funções Globais ********************/
+/********************* Funï¿½ï¿½es Globais ********************/
 
 /****
  *
- * CriaTabelaCuco(): Cria e inicializa uma tabela de dispersão cuco
+ * CriaTabelaCuco(): Cria e inicializa uma tabela de dispersï¿½o cuco
  *
- * Parâmetros:
- *     tabelas (saída) - a tabela cuco criada e iniciada
- *     nElementos (entrada) - número de posições da tabela
- *                            de dispersão
- *     fD1, fD2 (entrada) - as funções de dispersão utilizadas
+ * Parï¿½metros:
+ *     tabelas (saï¿½da) - a tabela cuco criada e iniciada
+ *     nElementos (entrada) - nï¿½mero de posiï¿½ï¿½es da tabela
+ *                            de dispersï¿½o
+ *     fD1, fD2 (entrada) - as funï¿½ï¿½es de dispersï¿½o utilizadas
  *
  * Retorno: Nada
  *
@@ -99,72 +82,66 @@ void CriaTabelaCuco( tTabelaCuco *tabelas, int nElementos,
 {
    int i;
 
-      /* Aloca espaço para as duas tabelas */
+      /* Aloca espaï¿½o para as duas tabelas */
    tabelas->tab1 = calloc(nElementos, sizeof(tColetorCuco));
    tabelas->tab2 = calloc(nElementos, sizeof(tColetorCuco));
    ASSEGURA( tabelas->tab1 && tabelas->tab2,
-             "\nImpossivel alocar a tabela de dispersão\n" );
+             "\nImpossivel alocar a tabela de dispersï¿½o\n" );
 
       /* Inicia as duas tabelas */
    for (i = 0; i < nElementos; ++i) {
-         /* Todos os elementos estão inicialmente desocupados */
+         /* Todos os elementos estï¿½o inicialmente desocupados */
       tabelas->tab1[i].status = VAZIO;
       tabelas->tab2[i].status = VAZIO;
    }
 
-      /* Inicia as funções de dispersão */
+      /* Inicia as funï¿½ï¿½es de dispersï¿½o */
    tabelas->fD1 = fD1;
    tabelas->fD2 = fD2;
 
-      /* Inicia o número de chaves nas tabelas */
+      /* Inicia o nï¿½mero de chaves nas tabelas */
    tabelas->nChaves = 0;
 }
 
 /****
  *
- * BuscaCuco(): Executa uma busca simples numa tabela de dispersão cuco
+ * BuscaCuco(): Executa uma busca simples numa tabela de dispersï¿½o cuco
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
  *      chave (entrada) - a chave de busca
  *
- * Retorno: Índice do registro no arquivo de registros,
- *          se a chave for encontrada; -1, em caso contrário
+ * Retorno: ï¿½ndice do registro no arquivo de registros,
+ *          se a chave for encontrada; -1, em caso contrï¿½rio
  *
  ****/
 int BuscaCuco( tTabelaCuco tabela, tCEP chave )
 {
-   int pos; /* Essa variável não é estritamente necessária, mas */
-            /* ela facilita a escrita das expressões seguintes  */
+  int pos;
+  pos = tabela.fD1(chave, tabela.tam);
 
-   pos = tabela.fD1(chave, tabela.tam);
+  if(tabela.tab1[pos].status == OCUPADO && !strcmp(tabela.tab1[pos].chaveEIndice.chave, chave)){
+      return tabela.tab1[pos].chaveEIndice.indice;
+  }
 
-      /* Verifica se a chave se encontra na primeira tabela */
-   if ( tabela.tab1[pos].status == OCUPADO &&
-        !strcmp(tabela.tab1[pos].chaveEIndice.chave, chave) )
-      return tabela.tab1[pos].chaveEIndice.indice; /* Chave encontrada */
+  pos = tabela.fD2(chave, tabela.tam);
 
-   /* A chave ainda não foi encontrada. Verifica */
-   /* se ela se encontra na segunda tabela.      */
+  if(tabela.tab2[pos].status == OCUPADO && !strcmp(tabela.tab2[pos].chaveEIndice.chave, chave)){
+   return tabela.tab2[pos].chaveEIndice.indice;
+  }
 
-   pos = tabela.fD2(chave, tabela.tam);
-
-   if ( tabela.tab2[pos].status == OCUPADO &&
-        !strcmp(tabela.tab2[pos].chaveEIndice.chave, chave) )
-      return tabela.tab2[pos].chaveEIndice.indice; /* Chave encontrada */
-
-   return -1; /* A chave não foi encontrada em nenhuma das tabelas */
+  return -1;
 }
 
 /****
  *
- * InsereCuco(): Faz inserção numa tabela de dispersão cuco
+ * InsereCuco(): Faz inserï¿½ï¿½o numa tabela de dispersï¿½o cuco
  *
- * Parâmetros:
- *      tabela (entrada/saída) - a tabela de dispersão
- *      chaveEIndice (entrada) - o par chave/índice a ser inserido
+ * Parï¿½metros:
+ *      tabela (entrada/saï¿½da) - a tabela de dispersï¿½o
+ *      chaveEIndice (entrada) - o par chave/ï¿½ndice a ser inserido
  *
- * Retorno: 1, se houver inserção; 0, em caso contrário
+ * Retorno: 1, se houver inserï¿½ï¿½o; 0, em caso contrï¿½rio
  *
  ****/
 int InsereCuco(tTabelaCuco *tabela, tCEP_Ind chaveEIndice)
@@ -174,15 +151,15 @@ int InsereCuco(tTabelaCuco *tabela, tCEP_Ind chaveEIndice)
                 maxDesalojamentos;
    tCEP_Ind     aux;
 
-      /* Verifica se a chave já existe na tabela */
+      /* Verifica se a chave jï¿½ existe na tabela */
    if (BuscaCuco(*tabela, chaveEIndice.chave) >= 0)
-      return 0; /* Chave já existe na tabela */
+      return 0; /* Chave jï¿½ existe na tabela */
 
       /* Calcula o valor limite de desalojamentos. O valor   */
-      /* nlog n é sugerido pelos criadores da dispersão cuco */
+      /* nlog n ï¿½ sugerido pelos criadores da dispersï¿½o cuco */
    maxDesalojamentos = tabela->nChaves*log2(tabela->nChaves);
 
-      /* Tenta efetuar a inserção numa das tabelas */
+      /* Tenta efetuar a inserï¿½ï¿½o numa das tabelas */
    for (i = 0; i < maxDesalojamentos; ++i) {
       /*                                  */
       /* Tenta inserir na primeira tabela */
@@ -191,22 +168,22 @@ int InsereCuco(tTabelaCuco *tabela, tCEP_Ind chaveEIndice)
 
       if (tabela->tab1[pos].status == VAZIO) {
          /*                                                                */
-         /* Foi encontrado um espaço vazio na primeira tabela. Efetua-se a */
-         /* inserção e retorna-se  indicando o sucesso da operação         */
+         /* Foi encontrado um espaï¿½o vazio na primeira tabela. Efetua-se a */
+         /* inserï¿½ï¿½o e retorna-se  indicando o sucesso da operaï¿½ï¿½o         */
          /*                                                                */
 
-            /* Insere o par chave/índice */
+            /* Insere o par chave/ï¿½ndice */
          tabela->tab1[pos].chaveEIndice = chaveEIndice;
 
-         tabela->tab1[pos].status = OCUPADO; /* Esta posição passa a ser ocupada */
+         tabela->tab1[pos].status = OCUPADO; /* Esta posiï¿½ï¿½o passa a ser ocupada */
 
-         ++tabela->nChaves; /* O número de chaves aumentou */
+         ++tabela->nChaves; /* O nï¿½mero de chaves aumentou */
 
          return 1;
       } else {
          /*                                                                     */
-         /* Não foi encontrado um espaço vazio. É preciso desalojar a chave que */
-         /* se encontra nessa posição e tentar inseri-la na segunda tabela      */
+         /* Nï¿½o foi encontrado um espaï¿½o vazio. ï¿½ preciso desalojar a chave que */
+         /* se encontra nessa posiï¿½ï¿½o e tentar inseri-la na segunda tabela      */
          /*                                                                     */
 
          aux = tabela->tab1[pos].chaveEIndice; /* Guarda chave a ser desalojada */
@@ -224,39 +201,39 @@ int InsereCuco(tTabelaCuco *tabela, tCEP_Ind chaveEIndice)
 
       if (tabela->tab2[pos].status == VAZIO) {
          /*                                                             */
-         /* Foi encontrado um espaço vazio na segunda tabela. Efetua-se */
-         /* a inserção e retorna-se indicando o sucesso da operação     */
+         /* Foi encontrado um espaï¿½o vazio na segunda tabela. Efetua-se */
+         /* a inserï¿½ï¿½o e retorna-se indicando o sucesso da operaï¿½ï¿½o     */
          /*                                                             */
 
-            /* Insere o par chave/índice */
+            /* Insere o par chave/ï¿½ndice */
          tabela->tab2[pos].chaveEIndice = chaveEIndice;
 
-            /* Esta posição passa a ser ocupada */
+            /* Esta posiï¿½ï¿½o passa a ser ocupada */
          tabela->tab2[pos].status = OCUPADO;
 
-         ++tabela->nChaves; /* O número de chaves aumentou */
+         ++tabela->nChaves; /* O nï¿½mero de chaves aumentou */
 
          return 1;
       } else {
          /*                                                                     */
-         /* Não foi encontrado um espaço vazio. É preciso desalojar a chave que */
-         /* se encontra nessa posição e tentar inseri-la na primeira tabela     */
+         /* Nï¿½o foi encontrado um espaï¿½o vazio. ï¿½ preciso desalojar a chave que */
+         /* se encontra nessa posiï¿½ï¿½o e tentar inseri-la na primeira tabela     */
          /*                                                                     */
 
             /* Guarda a chave a ser desalojada */
          aux = tabela->tab2[pos].chaveEIndice;
             /* Armazena a nova chave no lugar da chave desalojada */
          tabela->tab2[pos].chaveEIndice = chaveEIndice;
-            /* Tentar-se-á inserir a chave desalojada na primeira tabela */
+            /* Tentar-se-ï¿½ inserir a chave desalojada na primeira tabela */
          chaveEIndice = aux;
       }
    }
 
    /*                                                                   */
-   /* Se o laço terminou sem que houvesse retorno, considera-se que     */
-   /* o processo entrou em repetição  sem fim (de acordo com o critério */
-   /* especificado). Portanto, a tabela será reconstruída e a chave     */
-   /* restante será inserida nessa nova tabela.                         */
+   /* Se o laï¿½o terminou sem que houvesse retorno, considera-se que     */
+   /* o processo entrou em repetiï¿½ï¿½o  sem fim (de acordo com o critï¿½rio */
+   /* especificado). Portanto, a tabela serï¿½ reconstruï¿½da e a chave     */
+   /* restante serï¿½ inserida nessa nova tabela.                         */
    /*                                                                   */
 
    RedimensionaCuco(tabela, chaveEIndice);
@@ -266,58 +243,48 @@ int InsereCuco(tTabelaCuco *tabela, tCEP_Ind chaveEIndice)
 
 /****
  *
- * RemoveCuco(): Remove uma chave de uma tabela de dispersão cuco
+ * RemoveCuco(): Remove uma chave de uma tabela de dispersï¿½o cuco
  *
- * Parâmetros:
- *      tabela (entrada/saída) - a tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada/saï¿½da) - a tabela de dispersï¿½o
  *      chave (entrada) - a chave de busca
  *
- * Retorno: 1, se a remoção foi ok; 0, caso contrário
+ * Retorno: 1, se a remoï¿½ï¿½o foi ok; 0, caso contrï¿½rio
  *
  ****/
 int RemoveCuco(tTabelaCuco *tabela, tCEP chave)
 {
-   int pos; /* Essa variável não é estritamente necessária, mas */
-            /* ela facilita a escrita das expressões seguintes  */
+   int pos;
 
    pos = tabela->fD1(chave, tabela->tam);
 
-      /* Tenta efetuar a remoção na primeira tabela */
-   if ( tabela->tab1[pos].status == OCUPADO &&
-        !strcmp(tabela->tab1[pos].chaveEIndice.chave, chave) ) {
-      tabela->tab1[pos].status = VAZIO; /* Chave encontrada */
-
-      --tabela->nChaves;
+   if(tabela->tab1[pos].status == OCUPADO && !strcmp(tabela->tab1[pos].chaveEIndice.chave, chave)){
+      tabela->tab1[pos].status = VAZIO;
+      tabela->nChaves--;
 
       return 1;
    }
-
-   /*                                                                    */
-   /* A chave ainda não foi removida. Tenta removê-la da segunda tabela. */
-   /*                                                                    */
 
    pos = tabela->fD2(chave, tabela->tam);
 
-   if ( tabela->tab2[pos].status == OCUPADO &&
-        !strcmp(tabela->tab2[pos].chaveEIndice.chave, chave) ) {
-      tabela->tab2[pos].status = VAZIO; /* Chave encontrada */
-
-      --tabela->nChaves;
+   if(tabela->tab2[pos].status == OCUPADO && !strcmp(tabela->tab2[pos].chaveEIndice.chave, chave)){
+      tabela->tab2[pos].status = VAZIO;
+      tabela->nChaves--;
 
       return 1;
    }
 
-   return 0;  /* A chave não foi encontrada */
+   return -1;
 }
 
 /****
  *
- * NChavesCuco(): Calcula o número de chaves na tabela de dispersão
+ * NChavesCuco(): Calcula o nï¿½mero de chaves na tabela de dispersï¿½o
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
  *
- * Retorno: O número de chaves na tabela de dispersão
+ * Retorno: O nï¿½mero de chaves na tabela de dispersï¿½o
  *
  ****/
 int NChavesCuco(tTabelaCuco tabela)
@@ -339,13 +306,13 @@ int NChavesCuco(tTabelaCuco tabela)
 
 /****
  *
- * NElementosVaziosCuco(): Calcula o número de elementos vazios
- *                     na tabela de dispersão
+ * NElementosVaziosCuco(): Calcula o nï¿½mero de elementos vazios
+ *                     na tabela de dispersï¿½o
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
  *
- * Retorno: O número de elementos vazios na tabela de dispersão
+ * Retorno: O nï¿½mero de elementos vazios na tabela de dispersï¿½o
  *
  ****/
 int NElementosVaziosCuco(tTabelaCuco tabela)
@@ -365,23 +332,23 @@ int NElementosVaziosCuco(tTabelaCuco tabela)
 
 /****
  *
- * DestroiTabelaCuco(): Libera o espaço ocupado por uma tabela
- *                  de dispersão com endereçamento aberto
+ * DestroiTabelaCuco(): Libera o espaï¿½o ocupado por uma tabela
+ *                  de dispersï¿½o com endereï¿½amento aberto
  *
- * Parâmetros:
- *      tabela (entrada) - a tabela de dispersão
- *      tamTabela (entrada) - tamanho da tabela de dispersão
+ * Parï¿½metros:
+ *      tabela (entrada) - a tabela de dispersï¿½o
+ *      tamTabela (entrada) - tamanho da tabela de dispersï¿½o
  *
  * Retorno: Nada
  *
  ****/
 void DestroiTabelaCuco(tTabelaCuco *tabela)
 {
-      /* Libera o espaço ocupado por cada array */
+      /* Libera o espaï¿½o ocupado por cada array */
    free(tabela->tab1);
    free(tabela->tab2);
 
-      /* Os arrays não são mais válidos */
+      /* Os arrays nï¿½o sï¿½o mais vï¿½lidos */
    tabela->tab1 = NULL;
    tabela->tab2 = NULL;
 }
